@@ -67,7 +67,7 @@ struct HomePageView: View {
                 .navigationBarTitle("才庫", displayMode: .large)
                 .navigationBarItems(trailing: rightTopbutton)
             }
-        }
+        }.navigationViewStyle(.stack)
 
 
     }
