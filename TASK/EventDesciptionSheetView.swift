@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EventDesciptionSheetView: View {
-    @Environment (\.presentationMode) var presentationMode
+    @Environment(\.presentationMode) var presentationMode
     
     var description: String
     
