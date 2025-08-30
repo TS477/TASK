@@ -15,6 +15,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		033013A92E6347C00010AD22 /* SupportFile */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SupportFile;
+			sourceTree = "<group>";
+		};
 		03E6AA132E6337EC00D34B10 /* TASK */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = TASK;
@@ -42,6 +47,7 @@
 		03E6AA082E6337EC00D34B10 = {
 			isa = PBXGroup;
 			children = (
+				033013A92E6347C00010AD22 /* SupportFile */,
 				0FCB0B8C2E6343E900FD9ED1 /* example */,
 				03E6AA132E6337EC00D34B10 /* TASK */,
 				03E6AA122E6337EC00D34B10 /* Products */,
@@ -72,6 +78,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				033013A92E6347C00010AD22 /* SupportFile */,
 				03E6AA132E6337EC00D34B10 /* TASK */,
 				0FCB0B8C2E6343E900FD9ED1 /* example */,
 			);
