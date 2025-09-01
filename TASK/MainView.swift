@@ -10,7 +10,7 @@ import SwiftUI
 // 整體管理的視圖
 struct MainView: View {
     // 用於底部導航的屬性
-    @State private var selectedTab = 0 // 用來判斷哪一個畫面的索引
+    @EnvironmentObject private var navigationManager: NavigationManager
     let myTabs = [ // 設置圖案和標籤
         (icon: "house.fill", title: "首頁"),
         (icon: "magnifyingglass", title: "搜尋"),
@@ -22,7 +22,7 @@ struct MainView: View {
     var body: some View {
         VStack {
             Group {
-                switch selectedTab {
+                switch self.navigationManager.selectedTab {
                 case 0: HomePageView()
                 case 1: Text("搜索內容待完成")
                 case 2: Text("提案內容待完成")
@@ -35,7 +35,7 @@ struct MainView: View {
             
             
             // 設置y偏移
-            CustomTabBar(tabs: myTabs, selectedIndex: $selectedTab).offset(y: 20)
+            CustomTabBar(tabs: myTabs, selectedIndex: self.$navigationManager.selectedTab).offset(y: 20)
         }
         
 
@@ -84,6 +84,11 @@ struct MainView: View {
     }
 }
 
+// NavigationManager 類
+class NavigationManager: ObservableObject {
+    @Published var selectedTab: Int = 0
+}
+
 #Preview {
-    MainView()
+    MainView().environmentObject(NavigationManager())
 }
