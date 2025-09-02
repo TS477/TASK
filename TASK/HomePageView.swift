@@ -41,6 +41,8 @@ struct HomePageView: View {
     let eventManager: EventManager = EventManager()
     // test ////////////////////////
 
+    @EnvironmentObject var buttomNavigation: ButtomNavigation
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -108,7 +110,7 @@ struct HomePageView: View {
                 HStack(spacing: 20) {
                     // user button
                     Button(action: {
-                        // go to user information screen
+                        buttomNavigation.changeView(AnyView(MenuView()), needButtomNavigation: true)
                     }) {
                         Image("DemoImage")
                             .resizable()
@@ -140,12 +142,14 @@ struct HomePageView: View {
     
     // 群按鈕
     private struct GroupButton: View {
+        @EnvironmentObject var buttonNavigation: ButtomNavigation
+        
         var groupImage: Image
         var imageSize: CGFloat
         
         var body: some View {
             Button(action: {
-                // 去到群
+                self.buttonNavigation.changeView(AnyView(EventOption()), needButtomNavigation: true)
             }) {
                 groupImage
                     .resizable()
@@ -290,5 +294,5 @@ struct HomePageView: View {
 
 
 #Preview {
-    HomePageView()
+    HomePageView().environmentObject(ButtomNavigation())
 }

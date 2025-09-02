@@ -10,7 +10,6 @@ import SwiftUI
 // 整體管理的視圖
 struct MainView: View {
     // 用於底部導航的屬性
-    @EnvironmentObject private var buttomNavigation: ButtomNavigation
     let myTabs: [(icon: String, title: String, targetView: AnyView)] = [
         (icon: "house.fill", title: "首頁", targetView: AnyView(HomePageView())),
         (icon: "magnifyingglass", title: "搜尋", targetView: AnyView(Text("搜索內容待完成"))),
@@ -19,9 +18,9 @@ struct MainView: View {
         (icon: "figure.2", title: "活動一覽", targetView: AnyView(Text("活動一覽")))
     ]
     
+    @EnvironmentObject var buttomNavigation: ButtomNavigation
+    
     var body: some View {
-        
-        
         VStack {
             buttomNavigation.currentView
                 .frame(maxWidth: .infinity, maxHeight: .infinity) // 顯示現在的畫面
@@ -37,10 +36,10 @@ struct MainView: View {
     
     // 自定義底部導航欄
     private struct CustomTabBar: View {
-        @EnvironmentObject private var buttomNavigation: ButtomNavigation
-        
         // 傳入的 tab 項目，(系統圖標名稱, 標題)
         let tabs: [(icon: String, title: String, targetView: AnyView)]
+        
+        @EnvironmentObject var buttomNavigation: ButtomNavigation
         
         // 底部現在索引
         @State var currentTabIndex: Int = 0
@@ -81,17 +80,6 @@ struct MainView: View {
             }
             .background(Color(UIColor.systemBackground))
         }
-    }
-}
-
-// NavigationManager 類
-class ButtomNavigation: ObservableObject {
-    @Published var currentView: AnyView = AnyView(HomePageView())
-    @Published var needButtomNavigation: Bool = true
-    
-    func changeView(_ view: AnyView, needButtomNavigation: Bool) {
-        self.currentView = view
-        self.needButtomNavigation = needButtomNavigation
     }
 }
 
