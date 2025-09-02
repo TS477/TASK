@@ -10,32 +10,26 @@ import SwiftUI
 // 整體管理的視圖
 struct MainView: View {
     // 用於底部導航的屬性
-    @EnvironmentObject private var navigationManager: NavigationManager
-    let myTabs = [ // 設置圖案和標籤
-        (icon: "house.fill", title: "首頁"),
-        (icon: "magnifyingglass", title: "搜尋"),
-        (icon: "brain.filled.head.profile", title: "提案"),
-        (icon: "apple.meditate", title: "未知"),
-        (icon: "figure.2", title: "活動一覽"),
+    @EnvironmentObject private var buttomNavigation: ButtomNavigation
+    let myTabs: [(icon: String, title: String, targetView: AnyView)] = [
+        (icon: "house.fill", title: "首頁", targetView: AnyView(HomePageView())),
+        (icon: "magnifyingglass", title: "搜尋", targetView: AnyView(Text("搜索內容待完成"))),
+        (icon: "brain.filled.head.profile", title: "提案", targetView: AnyView(Text("提案內容待完成"))),
+        (icon: "apple.meditate", title: "未知", targetView: AnyView(Text("未知內容"))),
+        (icon: "figure.2", title: "活動一覽", targetView: AnyView(Text("活動一覽")))
     ]
     
     var body: some View {
+        
+        
         VStack {
-            Group {
-                switch self.navigationManager.selectedTab {
-                case 0: HomePageView()
-                case 1: Text("搜索內容待完成")
-                case 2: Text("提案內容待完成")
-                case 3: Text("未知內容")
-                case 4: Text("活動一覽")
-                default: Text("錯誤")
-                }
+            buttomNavigation.currentView
+                .frame(maxWidth: .infinity, maxHeight: .infinity) // 顯示現在的畫面
+            
+            
+            if buttomNavigation.needButtomNavigation { // 根據需求決定是否顯示底部引導
+                CustomTabBar(tabs: myTabs).offset(y: 20)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            
-            
-            // 設置y偏移
-            CustomTabBar(tabs: myTabs, selectedIndex: self.$navigationManager.selectedTab).offset(y: 20)
         }
         
 
@@ -43,11 +37,16 @@ struct MainView: View {
     
     // 自定義底部導航欄
     private struct CustomTabBar: View {
+        @EnvironmentObject private var buttomNavigation: ButtomNavigation
+        
         // 傳入的 tab 項目，(系統圖標名稱, 標題)
-        let tabs: [(icon: String, title: String)]
+        let tabs: [(icon: String, title: String, targetView: AnyView)]
+        
+        // 底部現在索引
+        @State var currentTabIndex: Int = 0
         
         // 當前選中索引（綁定）
-        @Binding var selectedIndex: Int
+        // @Binding var selectedIndex: Int
         
         // 圖標大小和文字大小（可選參數，預設值）
         let iconSize: CGFloat = 28 // 圖標顏色
@@ -63,18 +62,19 @@ struct MainView: View {
             HStack(spacing: 36) {
                 ForEach(tabs.indices, id: \.self) { index in
                     Button(action: {
-                        selectedIndex = index
+                        buttomNavigation.changeView(tabs[index].targetView, needButtomNavigation: true) // 改變畫面
+                        currentTabIndex = index // 改變索引
                     }) {
                         VStack(spacing: 4) {
                             Image(systemName: tabs[index].icon)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: iconSize, height: iconSize)
-                                .foregroundColor(selectedIndex == index ? selectedColor : unselectedColor)
+                                .foregroundColor(currentTabIndex == index ? selectedColor : unselectedColor)
                             
                             Text(tabs[index].title)
                                 .font(.system(size: fontSize))
-                                .foregroundColor(selectedIndex == index ? selectedColor : unselectedColor)
+                                .foregroundColor(currentTabIndex == index ? selectedColor : unselectedColor)
                         }
                     }
                 }
@@ -85,10 +85,16 @@ struct MainView: View {
 }
 
 // NavigationManager 類
-class NavigationManager: ObservableObject {
-    @Published var selectedTab: Int = 0
+class ButtomNavigation: ObservableObject {
+    @Published var currentView: AnyView = AnyView(HomePageView())
+    @Published var needButtomNavigation: Bool = true
+    
+    func changeView(_ view: AnyView, needButtomNavigation: Bool) {
+        self.currentView = view
+        self.needButtomNavigation = needButtomNavigation
+    }
 }
 
 #Preview {
-    MainView().environmentObject(NavigationManager())
+    MainView().environmentObject(ButtomNavigation())
 }

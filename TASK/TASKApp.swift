@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct TASKApp: App {
     var body: some Scene {
-        @StateObject var navigationManager = NavigationManager()
+        @StateObject var navigationManager = ButtomNavigation()
         
         WindowGroup {
             MainView().environmentObject(navigationManager)
