@@ -8,11 +8,104 @@
 import SwiftUI
 
 struct MenuView: View {
+    // test ///////////////////
+    var personalImage: Image = Image("personal")
+    // test ///////////////////
+    
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            // 背景渐变
+            /*
+            LinearGradient(
+                gradient: Gradient(colors: [Color.blue, Color.purple]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .ignoresSafeArea()
+             */
+            
+            // 菜单容器
+            VStack(spacing: 20) {
+                personalImage
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 100)
+                    .clipShape(Circle())
+                    .overlay(
+                        Circle()
+                            .stroke(lineWidth: 4)
+                            .fill(
+                                Gradient(colors: [.red, .blue])
+                            )
+                    )
+                    .padding(10)
+                
+                // 菜单按钮
+                MenuButton(title: "個人檔案", icon: "person.circle.fill", color: .green,
+                           targetView: AnyView(EmptyView()))
+                                
+                MenuButton(title: "訂立目標", icon: "target", color: .blue,
+                           targetView: AnyView(EmptyView()))
+                                
+                MenuButton(title: "活動紀錄", icon: "list.bullet.clipboard.fill", color: .orange,
+                           targetView: AnyView(EmptyView()))
+                                
+                MenuButton(title: "商店", icon: "cart.fill", color: .purple,
+                           targetView: AnyView(EmptyView()))
+                                
+                MenuButton(title: "掃瞄器", icon: "qrcode.viewfinder", color: .indigo,
+                           targetView: AnyView(EmptyView()))
+                                
+                MenuButton(title: "設定", icon: "gearshape.fill", color: .gray,
+                           targetView: AnyView(EmptyView()))
+                                
+                MenuButton(title: "登出", icon: "rectangle.portrait.and.arrow.right", color: .red,
+                           targetView: AnyView(EmptyView()))
+                
+                Spacer()
+            }
+            .padding()
+        }
     }
 }
 
+struct MenuButton: View {
+    let title: String
+    let icon: String
+    let color: Color
+    let targetView: AnyView
+    
+    @EnvironmentObject var buttomNavigation: ButtomNavigation
+    
+    var body: some View {
+        Button(action: {
+            buttomNavigation.changeView(targetView, needButtomNavigation: true)
+        }) {
+            HStack {
+                Image(systemName: icon)
+                    .font(.title2)
+                    .foregroundColor(.white)
+                
+                Text(title)
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.white)
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .foregroundColor(.white.opacity(0.7))
+            }
+            .padding()
+            .background(color)
+            .cornerRadius(15)
+            .shadow(color: color.opacity(0.5), radius: 10, x: 0, y: 5)
+        }
+    }
+}
+
+
 #Preview {
-    MenuView()
+    MenuView().environmentObject(ButtomNavigation())
 }
