@@ -11,7 +11,6 @@ struct SwiftUITextEditor: View {
     @State var text: String = ""
     
     var body: some View {
-        
         ZStack {
             // text editor
             ZStack(alignment: .topLeading) {
