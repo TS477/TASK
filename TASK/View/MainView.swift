@@ -88,7 +88,6 @@ struct MainView: View {
     
     return MainView()
         .environmentObject(navigation)
-        // .environmentObject(userViewModel) // 也要直接注入到預覽
         .onAppear {
             // 註冊 ViewModel
             navigation.register(userViewModel)

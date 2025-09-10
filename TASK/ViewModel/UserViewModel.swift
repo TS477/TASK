@@ -30,6 +30,8 @@ class UserViewModel: ObservableObject {
             switch result {
             case .success(let user):
                 print("用戶數據已經更新")
+                
+                self.userModel = user
             case .failure(let error):
                 print("获取用户失败: \(error)")
             }
@@ -72,7 +74,6 @@ class UserViewModel: ObservableObject {
                 do {
                     let user = try JSONDecoder().decode(UserModel.self, from: data)
                     completion(.success(user))
-                    self.userModel = user
                 } catch {
                     completion(.failure(error))
                 }
