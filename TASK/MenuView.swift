@@ -76,7 +76,7 @@ struct MenuButton: View {
     let color: Color
     let targetView: AnyView
     
-    @EnvironmentObject var buttomNavigation: ButtomNavigation
+    @EnvironmentObject var buttomNavigation: Navigation
     
     var body: some View {
         Button(action: {
@@ -107,5 +107,5 @@ struct MenuButton: View {
 
 
 #Preview {
-    MenuView().environmentObject(ButtomNavigation())
+    MenuView().environmentObject(Navigation())
 }

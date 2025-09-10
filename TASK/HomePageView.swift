@@ -41,7 +41,7 @@ struct HomePageView: View {
     let eventManager: EventManager = EventManager()
     // test ////////////////////////
 
-    @EnvironmentObject var buttomNavigation: ButtomNavigation
+    @EnvironmentObject var buttomNavigation: Navigation
     // @EnvironmentObject var userViewModel: UserViewModel
     
     var body: some View {
@@ -146,7 +146,7 @@ struct HomePageView: View {
     
     // 群按鈕
     private struct GroupButton: View {
-        @EnvironmentObject var buttonNavigation: ButtomNavigation
+        @EnvironmentObject var buttonNavigation: Navigation
         
         var groupImage: Image
         var imageSize: CGFloat
@@ -299,6 +299,5 @@ struct HomePageView: View {
 
 #Preview {
     HomePageView()
-        .environmentObject(ButtomNavigation())
-        // .environmentObject(UserViewModel(userModel: UserModel()))
+        .environmentObject(Navigation())
 }

@@ -18,7 +18,7 @@ struct MainView: View {
         (icon: "figure.2", title: "活動一覽", targetView: AnyView(Text("活動一覽")))
     ]
     
-    @EnvironmentObject var buttomNavigation: ButtomNavigation
+    @EnvironmentObject var buttomNavigation: Navigation
     
     var body: some View {
         VStack() {
@@ -38,7 +38,7 @@ struct MainView: View {
         // 傳入的 tab 項目，(系統圖標名稱, 標題)
         let tabs: [(icon: String, title: String, targetView: AnyView)]
         
-        @EnvironmentObject var buttomNavigation: ButtomNavigation
+        @EnvironmentObject var buttomNavigation: Navigation
         
         // 底部現在索引
         @State var currentTabIndex: Int = 0
@@ -83,5 +83,5 @@ struct MainView: View {
 }
 
 #Preview {
-    MainView().environmentObject(ButtomNavigation())
+    MainView().environmentObject(Navigation())
 }

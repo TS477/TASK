@@ -8,7 +8,7 @@
 import SwiftUI
 
 // NavigationManager 類
-class ButtomNavigation: ObservableObject {
+class Navigation: ObservableObject {
     @Published var currentView: AnyView = AnyView(HomePageView())
     @Published var needButtomNavigation: Bool = true
     

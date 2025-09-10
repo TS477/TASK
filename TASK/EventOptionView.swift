@@ -9,7 +9,7 @@ import SwiftUI
 struct EventOption: View {
     @State private var selectedEvent: String = "hahaha"
     @State private var selectedOption: String = ""
-    @EnvironmentObject var buttomNavigation:ButtomNavigation
+    @EnvironmentObject var buttomNavigation:Navigation
     
     // 定義按鈕數據
     let buttons = [
@@ -105,6 +105,6 @@ struct NavigationButton: View {
 // 預覽
 struct EventOption_Previews: PreviewProvider {
     static var previews: some View {
-        EventOption().environmentObject(ButtomNavigation())
+        EventOption().environmentObject(Navigation())
     }
 }
