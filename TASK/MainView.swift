@@ -21,7 +21,7 @@ struct MainView: View {
     @EnvironmentObject var buttomNavigation: ButtomNavigation
     
     var body: some View {
-        VStack {
+        VStack() {
             buttomNavigation.currentView
                 .frame(maxWidth: .infinity, maxHeight: .infinity) // 顯示現在的畫面
             

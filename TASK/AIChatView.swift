@@ -72,6 +72,7 @@ struct AIChatView: View {
         .onAppear {
             addWelcomeMessage()
         }
+        .keyboardType(.default)
     }
     
     private func sendMessage() {

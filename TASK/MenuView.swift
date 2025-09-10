@@ -30,7 +30,7 @@ struct MenuView: View {
                 personalImage
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 100)
+                    .frame(width: 110)
                     .clipShape(Circle())
                     .overlay(
                         Circle()
@@ -43,7 +43,7 @@ struct MenuView: View {
                 
                 // 菜单按钮
                 MenuButton(title: "個人檔案", icon: "person.circle.fill", color: .green,
-                           targetView: AnyView(EmptyView()))
+                           targetView: AnyView(ProfileView()))
                                 
                 MenuButton(title: "訂立目標", icon: "target", color: .blue,
                            targetView: AnyView(EmptyView()))
