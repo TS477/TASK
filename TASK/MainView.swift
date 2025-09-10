@@ -18,14 +18,14 @@ struct MainView: View {
         (icon: "figure.2", title: "活動一覽", targetView: AnyView(Text("活動一覽")))
     ]
     
-    @EnvironmentObject var buttomNavigation: Navigation
+    @EnvironmentObject var navigation: Navigation
     
     var body: some View {
         VStack() {
-            buttomNavigation.currentView
+            navigation.currentView
                 .frame(maxWidth: .infinity, maxHeight: .infinity) // 顯示現在的畫面
             
-            if buttomNavigation.needButtomNavigation { // 根據需求決定是否顯示底部引導
+            if navigation.needButtomNavigation { // 根據需求決定是否顯示底部引導
                 CustomTabBar(tabs: myTabs).offset(y: 20)
             }
         }

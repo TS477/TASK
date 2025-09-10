@@ -41,7 +41,7 @@ struct HomePageView: View {
     let eventManager: EventManager = EventManager()
     // test ////////////////////////
 
-    @EnvironmentObject var buttomNavigation: Navigation
+    @EnvironmentObject var navigation: Navigation
     // @EnvironmentObject var userViewModel: UserViewModel
     
     var body: some View {
@@ -114,7 +114,7 @@ struct HomePageView: View {
                 HStack(spacing: 20) {
                     // user button
                     Button(action: {
-                        buttomNavigation.changeView(AnyView(MenuView()), needButtomNavigation: true)
+                        navigation.changeView(AnyView(MenuView()), needButtomNavigation: true)
                     }) {
                         Image("DemoImage")
                             .resizable()
