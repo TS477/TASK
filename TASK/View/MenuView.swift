@@ -61,7 +61,7 @@ struct MenuView: View {
                            targetView: AnyView(EmptyView()))
                                 
                 MenuButton(title: "登出", icon: "rectangle.portrait.and.arrow.right", color: .red,
-                           targetView: AnyView(EmptyView()))
+                           targetView: AnyView(AppLoginView()))
                 
                 Spacer()
             }
