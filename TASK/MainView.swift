@@ -83,5 +83,16 @@ struct MainView: View {
 }
 
 #Preview {
-    MainView().environmentObject(Navigation())
+    let navigation = Navigation()
+    let userViewModel = UserViewModel(userModel: UserModel()) // 創建獨立的 ViewModel 實例
+    
+    return MainView()
+        .environmentObject(navigation)
+        // .environmentObject(userViewModel) // 也要直接注入到預覽
+        .onAppear {
+            // 註冊 ViewModel
+            navigation.register(userViewModel)
+            // 初始化畫面
+            navigation.changeView(AnyView(HomePageView()), needButtomNavigation: true)
+        }
 }
