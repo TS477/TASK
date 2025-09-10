@@ -11,7 +11,9 @@ import SwiftUI
 struct TASKApp: App {
     var body: some Scene {
         WindowGroup {
-            MainView().environmentObject(ButtomNavigation())
+            MainView()
+                .environmentObject(ButtomNavigation())
+                .environmentObject(UserViewModel(userModel: UserModel()))
         }
     }
 }

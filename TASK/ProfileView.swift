@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @EnvironmentObject var userViewModel: UserViewModel
+    
     var body: some View {
             VStack(spacing: 40) {
                 // 顶部头像区域
-                HStack {
-                    // 圆形头像
-                    Image("user_avatar")
+                VStack(spacing: 10) { // 頭像和名字
+                    Image("") // test //////////////
                         .resizable()
                         .scaledToFill()
                         .frame(width: 80, height: 80)
@@ -23,9 +24,13 @@ struct ProfileView: View {
                                 .stroke(Color.black, lineWidth: 2)
                                 .shadow(radius: 3)
                         )
+                        .padding(.top, 10)
+                    
+                    Text(userViewModel.name)
+                        .font(.system(size: 24, weight: .bold))
                 }
-                .padding(.horizontal)
-                .padding(.top)
+                
+                
                 
                 // 属性值区域
                 VStack(alignment: .leading, spacing: 15) {
@@ -47,51 +52,51 @@ struct ProfileView: View {
                     AttributeRow(
                         color: .red,
                         // test //////////////
-                        value: CGFloat(AbilityTest.ability1),
+                        value: CGFloat(userViewModel.abilityVal1),
                         // test //////////////
                         )
                     
                     AttributeRow(
                         color: .orange,
                         // test //////////////
-                        value: CGFloat(AbilityTest.ability2),
+                        value: CGFloat(userViewModel.abilityVal2),
                         // test //////////////
                         )
                     
                     AttributeRow(
                         color: .yellow,
                         // test //////////////
-                        value: CGFloat(AbilityTest.ability3),
+                        value: CGFloat(userViewModel.abilityVal3),
                         // test //////////////
                         )
                     AttributeRow(
                         color: .green,
                         // test //////////////
-                        value: CGFloat(AbilityTest.ability4),
+                        value: CGFloat(userViewModel.abilityVal4),
                         // test //////////////
                         )
                     AttributeRow(
                         color: .cyan,
                         // test //////////////
-                        value: CGFloat(AbilityTest.ability5),
+                        value: CGFloat(userViewModel.abilityVal5),
                         // test //////////////
                         )
                     AttributeRow(
                         color: .blue,
                         // test ////////u//////
-                        value: CGFloat(AbilityTest.ability6),
+                        value: CGFloat(userViewModel.abilityVal6),
                         // test //////////////
                         )
                     AttributeRow(
                         color: .purple,
                         // test //////////////
-                        value: CGFloat(AbilityTest.ability7),
+                        value: CGFloat(userViewModel.abilityVal7),
                         // test //////////////
                         )
                     AttributeRow(
                         color: .gray,
                         // test //////////////
-                        value: CGFloat(AbilityTest.ability8),
+                        value: CGFloat(userViewModel.abilityVal8),
                         // test //////////////
                         )
                 }
@@ -179,4 +184,5 @@ struct ProfileView: View {
 
 #Preview {
     ProfileView()
+        .environmentObject(UserViewModel(userModel: UserModel()))
 }

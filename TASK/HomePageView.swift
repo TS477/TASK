@@ -42,6 +42,7 @@ struct HomePageView: View {
     // test ////////////////////////
 
     @EnvironmentObject var buttomNavigation: ButtomNavigation
+    // @EnvironmentObject var userViewModel: UserViewModel
     
     var body: some View {
         NavigationView {
@@ -69,8 +70,11 @@ struct HomePageView: View {
                 .navigationBarTitle("才庫", displayMode: .large)
                 .navigationBarItems(trailing: rightTopbutton)
             }
-        }.navigationViewStyle(.stack)
-
+        }
+        .navigationViewStyle(.stack)
+        .onAppear() {
+            print("hi")
+        }
 
     }
     
@@ -294,5 +298,7 @@ struct HomePageView: View {
 
 
 #Preview {
-    HomePageView().environmentObject(ButtomNavigation())
+    HomePageView()
+        .environmentObject(ButtomNavigation())
+        // .environmentObject(UserViewModel(userModel: UserModel()))
 }
