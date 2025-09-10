@@ -92,6 +92,6 @@ struct MainView: View {
             // 註冊 ViewModel
             navigation.register(userViewModel)
             // 初始化畫面
-            navigation.changeView(AnyView(HomePageView()), needButtomNavigation: true)
+            navigation.changeView(AnyView(AppLoginView()), needButtomNavigation: false)
         }
 }

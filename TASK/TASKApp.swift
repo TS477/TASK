@@ -22,7 +22,7 @@ struct TASKApp: App {
                     // 未來有新的 ViewModel 就再加一行
                     
                     // 轉畫面
-                    navigation.changeView(AnyView(HomePageView()), needButtomNavigation: true)
+                    navigation.changeView(AnyView(AppLoginView()), needButtomNavigation: false)
                 }
         }
     }

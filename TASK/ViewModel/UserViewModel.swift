@@ -24,60 +24,49 @@ class UserViewModel: ObservableObject {
     
     init(userModel: UserModel) {
         self.userModel = userModel
+    }
+    
+    func fetchUser(userId: Int, completion: @escaping (Result<UserModel, Error>) -> Void) {
+        var components = URLComponents(string: "https://testbase.yyang9102.workers.dev/user")
+        components?.queryItems = [URLQueryItem(name: "id", value: "\(userId)")]
         
-        // test ////////////////////////////
-        fetchUser(userId: 12345) { result in
-            switch result {
-            case .success(let user):
-                print("用戶數據已經更新")
-                
-                self.userModel = user
-            case .failure(let error):
-                print("获取用户失败: \(error)")
-            }
+        // 製作url
+        guard let url = components?.url else {
+            completion(.failure(URLError(.badURL)))
+            return
         }
         
-        func fetchUser(userId: Int, completion: @escaping (Result<UserModel, Error>) -> Void) {
-            var components = URLComponents(string: "https://testbase.yyang9102.workers.dev/user")
-            components?.queryItems = [URLQueryItem(name: "id", value: "\(userId)")]
-            
-            // 製作url
-            guard let url = components?.url else {
-                completion(.failure(URLError(.badURL)))
+        // 指定http方法
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        // 等待和接受回應
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
                 return
             }
             
-            // 指定http方法
-            var request = URLRequest(url: url)
-            request.httpMethod = "GET"
-            
-            // 等待和接受回應
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                if let error = error {
-                    completion(.failure(error))
-                    return
-                }
-                
-                // 检查HTTP状态码
-                if let httpResponse = response as? HTTPURLResponse {
-                    if httpResponse.statusCode != 200 {
-                        completion(.failure(URLError(.badServerResponse)))
-                        return
-                    }
-                }
-                
-                guard let data = data else {
+            // 检查HTTP状态码
+            if let httpResponse = response as? HTTPURLResponse {
+                if httpResponse.statusCode != 200 {
                     completion(.failure(URLError(.badServerResponse)))
                     return
                 }
-                
-                do {
-                    let user = try JSONDecoder().decode(UserModel.self, from: data)
-                    completion(.success(user))
-                } catch {
-                    completion(.failure(error))
-                }
-            }.resume()
-        }
+            }
+            
+            guard let data = data else {
+                completion(.failure(URLError(.badServerResponse)))
+                return
+            }
+            
+            do {
+                let user = try JSONDecoder().decode(UserModel.self, from: data)
+                completion(.success(user))
+                self.userModel = user
+            } catch {
+                completion(.failure(error))
+            }
+        }.resume()
     }
 }
