@@ -6,9 +6,13 @@
 //
 
 import SwiftUI
+import CryptoKit
 
 class UserViewModel: ObservableObject {
     @Published private var userModel: UserModel
+    
+    let mainUrl: String = "https://testbase.yyang9102.workers.dev"
+    let iconUrl: String = "/icon/"
     
     var id: Int { userModel.id }
     var name: String { userModel.name }
@@ -26,9 +30,16 @@ class UserViewModel: ObservableObject {
         self.userModel = userModel
     }
     
-    func fetchUser(userId: Int, completion: @escaping (Result<UserModel, Error>) -> Void) {
-        var components = URLComponents(string: "https://testbase.yyang9102.workers.dev/user")
-        components?.queryItems = [URLQueryItem(name: "id", value: "\(userId)")]
+    // test ///////////////////////////
+    // 密碼要加鹽，還有一堆注入安全等等，先測試
+    func fetchUser(userId: Int, password: String, completion: @escaping (Result<UserModel, Error>) -> Void) {
+        var components = URLComponents(string: "\(self.mainUrl)/user")
+        
+        let encryptedPassword: String = sha256Hash(password) // 加密密碼
+        components?.queryItems = [
+            URLQueryItem(name: "id", value: "\(userId)"),
+            URLQueryItem(name: "password", value: "\(encryptedPassword)")
+        ] // 增加id, password參數
         
         // 製作url
         guard let url = components?.url else {
@@ -68,5 +79,26 @@ class UserViewModel: ObservableObject {
                 completion(.failure(error))
             }
         }.resume()
+    }
+    
+    func deleteUser() {
+        self.userModel = UserModel(
+            id: -1,
+            name: "",
+            imageUrl: "",
+            abilityVal1: 0,
+            abilityVal2: 0,
+            abilityVal3: 0,
+            abilityVal4: 0,
+            abilityVal5: 0,
+            abilityVal6: 0,
+            abilityVal7: 0,
+            abilityVal8: 0)
+    }
+    
+    private func sha256Hash(_ string: String) -> String {
+        let inputData = Data(string.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        return hashedData.compactMap { String(format: "%02x", $0) }.joined()
     }
 }

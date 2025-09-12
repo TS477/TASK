@@ -14,6 +14,7 @@ struct ProfileView: View {
             VStack(spacing: 40) {
                 // 顶部头像区域
                 VStack(spacing: 10) { // 頭像和名字
+                    /*
                     Image("") // test //////////////
                         .resizable()
                         .scaledToFill()
@@ -25,6 +26,24 @@ struct ProfileView: View {
                                 .shadow(radius: 3)
                         )
                         .padding(.top, 10)
+                     */
+                    
+                    AsyncImage(url: URL(string: "\(userViewModel.mainUrl + userViewModel.iconUrl + String(userViewModel.id)).png")) { image in
+                        image
+                            .resizable()
+                            .scaledToFit()
+                    } placeholder: {
+                        // 加載中的佔位符
+                        ProgressView()
+                    }
+                    .frame(width: 80, height: 80)
+                    .clipShape(Circle())
+                    .overlay(
+                        Circle()
+                            .stroke(Color.black, lineWidth: 2)
+                            .shadow(radius: 3)
+                    )
+                    .padding(.top, 10)
                     
                     Text(userViewModel.name)
                         .font(.system(size: 24, weight: .bold))

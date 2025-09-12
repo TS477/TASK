@@ -22,10 +22,10 @@ struct AppLoginView: View {
         ZStack {
             // 背景 - 柔和的渐变
             LinearGradient(gradient: Gradient(colors: [Color(red: 0.95, green: 0.97, blue: 1.0),
-                                                     Color(red: 0.88, green: 0.94, blue: 1.0)]),
+                                                       Color(red: 0.88, green: 0.94, blue: 1.0)]),
                            startPoint: .topLeading,
                            endPoint: .bottomTrailing)
-                .ignoresSafeArea()
+            .ignoresSafeArea()
             
             VStack(spacing: 30) {
                 // 标题区域
@@ -122,8 +122,8 @@ struct AppLoginView: View {
                         .background(
                             RoundedRectangle(cornerRadius: 15)
                                 .fill(LinearGradient(gradient: Gradient(colors: [.blue, .purple]),
-                                                   startPoint: .leading,
-                                                   endPoint: .trailing))
+                                                     startPoint: .leading,
+                                                     endPoint: .trailing))
                         )
                         .shadow(color: .blue.opacity(0.3), radius: 10, x: 0, y: 5)
                 }
@@ -142,10 +142,13 @@ struct AppLoginView: View {
         .sheet(isPresented: $showForgotPassword) {
             ForgotPasswordView()
         }
+        .onAppear() { // 每次進入這個畫面都要重置用戶
+            userViewModel.deleteUser()
+        }
     }
     
     private func login() {
-        userViewModel.fetchUser(userId: Int(username) ?? -1) { result in
+        userViewModel.fetchUser(userId: Int(username) ?? -1, password: self.password) { result in
             switch result {
             case .success(_):
                 print("用戶登錄成功")

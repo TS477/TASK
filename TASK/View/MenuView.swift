@@ -12,6 +12,7 @@ struct MenuView: View {
     var personalImage: Image = Image("personal")
     // test ///////////////////
     
+    @EnvironmentObject var userViewModel: UserViewModel
     
     var body: some View {
         ZStack {
@@ -27,6 +28,25 @@ struct MenuView: View {
             
             // 菜单容器
             VStack(spacing: 20) {
+                AsyncImage(url: URL(string: "\(userViewModel.mainUrl + userViewModel.iconUrl + String(userViewModel.id)).png")) { image in
+                    image
+                        .resizable()
+                        .scaledToFit()
+                } placeholder: {
+                    // 加載中的佔位符
+                    ProgressView()
+                }
+                .frame(width: 110)
+                .clipShape(Circle())
+                .overlay(
+                    Circle()
+                        .stroke(lineWidth: 4)
+                        .fill(
+                            Gradient(colors: [.red, .blue])
+                        )
+                )
+                .padding(10)
+                /*
                 personalImage
                     .resizable()
                     .scaledToFit()
@@ -40,6 +60,7 @@ struct MenuView: View {
                             )
                     )
                     .padding(10)
+                 */
                 
                 // 菜单按钮
                 MenuButton(title: "個人檔案", icon: "person.circle.fill", color: .green,
@@ -61,7 +82,8 @@ struct MenuView: View {
                            targetView: AnyView(EmptyView()))
                                 
                 MenuButton(title: "登出", icon: "rectangle.portrait.and.arrow.right", color: .red,
-                           targetView: AnyView(AppLoginView()))
+                           targetView: AnyView(AppLoginView()),
+                needButtomNavigation: false)
                 
                 Spacer()
             }
@@ -76,11 +98,13 @@ struct MenuButton: View {
     let color: Color
     let targetView: AnyView
     
+    var needButtomNavigation: Bool = true
+    
     @EnvironmentObject var buttomNavigation: Navigation
     
     var body: some View {
         Button(action: {
-            buttomNavigation.changeView(targetView, needButtomNavigation: true)
+            buttomNavigation.changeView(targetView, needButtomNavigation: self.needButtomNavigation)
         }) {
             HStack {
                 Image(systemName: icon)
@@ -107,5 +131,8 @@ struct MenuButton: View {
 
 
 #Preview {
-    MenuView().environmentObject(Navigation())
+    MenuView()
+        .environmentObject(Navigation())
+        .environmentObject(UserViewModel(userModel: UserModel()))
+    
 }

@@ -42,7 +42,7 @@ struct HomePageView: View {
     // test ////////////////////////
 
     @EnvironmentObject var navigation: Navigation
-    // @EnvironmentObject var userViewModel: UserViewModel
+    @EnvironmentObject var userViewModel: UserViewModel
     
     var body: some View {
         NavigationView {
@@ -116,7 +116,26 @@ struct HomePageView: View {
                     Button(action: {
                         navigation.changeView(AnyView(MenuView()), needButtomNavigation: true)
                     }) {
-                        Image("DemoImage")
+                        AsyncImage(url: URL(string: "\(userViewModel.mainUrl + userViewModel.iconUrl + String(userViewModel.id)).png")) { image in
+                            image
+                                .resizable()
+                                .scaledToFit()
+                        } placeholder: {
+                            // 加載中的佔位符
+                            ProgressView()
+                        }
+                        .frame(width: imageSize)
+                        .clipShape(Circle())
+                        .overlay(
+                            Circle()
+                                .stroke(lineWidth: 4)
+                                .fill(
+                                    Gradient(colors: [.red, .blue])
+                                )
+                        )
+                        .padding(.leading, 12)
+                        /*
+                        AsyncImage(url: URL(string: "https://testbase.yyang9102.workers.dev/icon/706.png"))
                             .resizable()
                             .scaledToFit()
                             .frame(width: imageSize)
@@ -129,6 +148,7 @@ struct HomePageView: View {
                                     )
                             )
                             .padding(.leading, 12)
+                         */
                     }
                     
                     ForEach(0..<groupImage.count, id: \.self) { index in
@@ -300,4 +320,5 @@ struct HomePageView: View {
 #Preview {
     HomePageView()
         .environmentObject(Navigation())
+        .environmentObject(UserViewModel(userModel: UserModel()))
 }

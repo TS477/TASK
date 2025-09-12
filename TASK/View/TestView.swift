@@ -6,21 +6,13 @@
 //
 
 import SwiftUI
+import CryptoKit
 
 struct TestView: View {
-    @State private var response: String = "点击按钮开始"
-    
     var body: some View {
-        VStack {
-            Text(response)
-                .padding()
+        AsyncImage(url: URL(string: "https://testbase.yyang9102.workers.dev/icon/706.png"))
             
-            Button("发送消息") {
-                AIModel.sendMessage(question: "你知道我是誰嗎") { text in
-                    self.response = text
-                }
-            }
-        }
+        
     }
 }
 
