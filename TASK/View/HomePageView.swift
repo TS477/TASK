@@ -72,9 +72,6 @@ struct HomePageView: View {
             }
         }
         .navigationViewStyle(.stack)
-        .onAppear() {
-            print("hi")
-        }
 
     }
     

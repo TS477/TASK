@@ -111,13 +111,18 @@ struct TargetSelectionView: View {
 
 // 套餐按鈕組件
 struct PackageButton: View {
+    @EnvironmentObject var navigation: Navigation
+    
     let title: String
     let icon: String
     let color: Color
-    let action: () -> Void
+    let action: () -> Void  // 添加这个闭包参数
     
     var body: some View {
-        Button(action: action) {
+        Button(action: {
+            action()  // 先执行传入的动作
+            navigation.changeView(AnyView(TargetAdjustmentView()), needButtomNavigation: true)
+        }) {
             VStack {
                 Image(systemName: icon)
                     .font(.title)
@@ -146,4 +151,5 @@ struct PackageButton: View {
 // 預覽
 #Preview {
     TargetSelectionView()
+        .environmentObject(Navigation())
 }

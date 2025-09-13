@@ -64,6 +64,7 @@ struct MainView: View {
                         currentTabIndex = index // 改變索引
                     }) {
                         VStack(spacing: 4) {
+                            
                             Image(systemName: tabs[index].icon)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
