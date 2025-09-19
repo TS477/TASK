@@ -9,15 +9,18 @@ import Foundation
 
 struct UserModel: Codable, Identifiable {
     var id: Int = -1
+    var age: Int = -1
+    var school_name: String = ""
     var name: String = ""
-    var imageUrl: String = ""
+    var icon_url: String = ""
     
-    var abilityVal1: Int = 0
-    var abilityVal2: Int = 0
-    var abilityVal3: Int = 0
-    var abilityVal4: Int = 0
-    var abilityVal5: Int = 0
-    var abilityVal6: Int = 0
-    var abilityVal7: Int = 0
-    var abilityVal8: Int = 0
+    var ability_val1: Int = 0
+    var ability_val2: Int = 0
+    var ability_val3: Int = 0
+    var ability_val4: Int = 0
+    var ability_val5: Int = 0
+    var ability_val6: Int = 0
+    var ability_val7: Int = 0
+    var ability_val8: Int = 0
+    var ability_val_customized: Int = 0
 }

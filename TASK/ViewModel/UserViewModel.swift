@@ -16,15 +16,19 @@ class UserViewModel: ObservableObject {
     
     var id: Int { userModel.id }
     var name: String { userModel.name }
-    var imageUrl: String { userModel.imageUrl }
-    var abilityVal1: Int { userModel.abilityVal1 }
-    var abilityVal2: Int { userModel.abilityVal2 }
-    var abilityVal3: Int { userModel.abilityVal3 }
-    var abilityVal4: Int { userModel.abilityVal4 }
-    var abilityVal5: Int { userModel.abilityVal5 }
-    var abilityVal6: Int { userModel.abilityVal6 }
-    var abilityVal7: Int { userModel.abilityVal7 }
-    var abilityVal8: Int { userModel.abilityVal8 }
+    var imageUrl: String { userModel.icon_url }
+    var schoolName: String { userModel.school_name }
+    var age: Int { userModel.age }
+    
+    var abilityVal1: Int { userModel.ability_val1 }
+    var abilityVal2: Int { userModel.ability_val2 }
+    var abilityVal3: Int { userModel.ability_val3 }
+    var abilityVal4: Int { userModel.ability_val4 }
+    var abilityVal5: Int { userModel.ability_val5 }
+    var abilityVal6: Int { userModel.ability_val6 }
+    var abilityVal7: Int { userModel.ability_val7 }
+    var abilityVal8: Int { userModel.ability_val8 }
+    var abilityValCustomaized: Int { userModel.ability_val_customized }
     
     init(userModel: UserModel) {
         self.userModel = userModel
@@ -33,7 +37,7 @@ class UserViewModel: ObservableObject {
     // test ///////////////////////////
     // 密碼要加鹽，還有一堆注入安全等等，先測試
     func fetchUser(userId: Int, password: String, completion: @escaping (Result<UserModel, Error>) -> Void) {
-        var components = URLComponents(string: "\(self.mainUrl)/user")
+        var components = URLComponents(string: "\(self.mainUrl)/student")
         
         let encryptedPassword: String = sha256Hash(password) // 加密密碼
         components?.queryItems = [
@@ -82,18 +86,7 @@ class UserViewModel: ObservableObject {
     }
     
     func deleteUser() {
-        self.userModel = UserModel(
-            id: -1,
-            name: "",
-            imageUrl: "",
-            abilityVal1: 0,
-            abilityVal2: 0,
-            abilityVal3: 0,
-            abilityVal4: 0,
-            abilityVal5: 0,
-            abilityVal6: 0,
-            abilityVal7: 0,
-            abilityVal8: 0)
+        self.userModel = UserModel()
     }
     
     private func sha256Hash(_ string: String) -> String {
