@@ -71,7 +71,7 @@ struct MenuView: View {
                 needButtomNavigation: true)
                                 
                 MenuButton(title: "活動紀錄", icon: "list.bullet.clipboard.fill", color: .orange,
-                           targetView: AnyView(EmptyView()))
+                           targetView: AnyView(EventRecordView()))
                                 
                 MenuButton(title: "商店", icon: "cart.fill", color: .purple,
                            targetView: AnyView(EmptyView()))
