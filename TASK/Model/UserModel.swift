@@ -10,9 +10,9 @@ import Foundation
 struct UserModel: Codable, Identifiable {
     var id: Int = -1
     var age: Int = -1
-    var school_name: String = ""
-    var name: String = ""
-    var icon_url: String = ""
+    var school_name: String = "測試學校名字"
+    var name: String = "測試名字"
+    var icon_url: String = "測試iconURL"
     
     var ability_val1: Int = 0
     var ability_val2: Int = 0
