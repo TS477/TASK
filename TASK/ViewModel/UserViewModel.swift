@@ -12,7 +12,7 @@ class UserViewModel: ObservableObject {
     @Published private var userModel: UserModel
     
     let mainUrl: String = "https://task.aifabula784.workers.dev"
-    let iconUrl: String = "/icons/"
+    let iconUrl: String = "/student/icon/"
     
     var id: Int { userModel.id }
     var name: String { userModel.name }
