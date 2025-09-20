@@ -17,31 +17,6 @@ struct HomePageView: View {
         Image("Rabbit"),
         Image("Cat"),
     ]
-    
-    // 數據管理類
-    class EventManager: ObservableObject {
-        @Published var eventDatas: [EventData] = [
-            EventData(
-                proposer: "大大大老師",
-                postImage: Image("StartUpImage"),
-                eventName: "探老活動",
-                date: Date(),
-                description: "這是一個探望老人的活動",
-                isLiked: false
-            ),
-            EventData(
-                proposer: "陳大文主任",
-                postImage: Image("DemoImage2"),
-                eventName: "賣棋活動",
-                date: Date(),
-                description: "這是一個買旗活動",
-                isLiked: false
-            )
-        ]
-    }
-    
-    let eventManager: EventManager = EventManager()
-    // test ////////////////////////
 
     @EnvironmentObject var navigation: Navigation
     @EnvironmentObject var userViewModel: UserViewModel
@@ -61,9 +36,11 @@ struct HomePageView: View {
                     
                     // post
                     TabView {
-                        ForEach(eventManager.eventDatas) { event in
-                            EventView(eventData: event)
+                        ForEach(postViewModel.posts) { post in
+                            EventView(eventData: EventData(proposer: "", postImage: Image(systemName: ""), eventName: post.eventName, date: post.date, description: post.description, isLiked: false))
                         }
+                        
+                        
                     }
                     .tabViewStyle(.page(indexDisplayMode: .never))
                     .frame(height: 500)
@@ -73,8 +50,16 @@ struct HomePageView: View {
                 .navigationBarTitle("才庫", displayMode: .large)
                 .navigationBarItems(trailing: rightTopbutton)
             }
+ 
         }
         .navigationViewStyle(.stack)
+        .onAppear() {
+            Task {
+                await postViewModel.loadMorePosts()
+                
+        
+            }
+        }
 
     }
     
@@ -265,7 +250,7 @@ struct HomePageView: View {
                             .font(.system(size: fontSize))
                             .bold()
                         
-                        Text("\(eventData.date.formatted())")
+                        Text(eventData.date)
                             .font(.system(size: fontSize))
                     }
                     
@@ -295,13 +280,13 @@ struct HomePageView: View {
         public var proposer: String
         public var postImage: Image
         public var eventName: String
-        public var date: Date
+        public var date: String
         public var description: String
         @Published public var isLiked: Bool
         
-        init(proposer: String, postImage: Image, eventName: String, date: Date, description: String, isLiked: Bool) {
+        init(proposer: String, postImage: Image, eventName: String, date: String, description: String, isLiked: Bool) {
             self.proposer = proposer
-            self.postImage = postImage
+            self.postImage = Image("")
             self.eventName = eventName
             self.date = date
             self.description = description
@@ -321,4 +306,5 @@ struct HomePageView: View {
     HomePageView()
         .environmentObject(Navigation())
         .environmentObject(UserViewModel(userModel: UserModel()))
+        .environmentObject(PostViewModel(posts: []))
 }
