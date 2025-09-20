@@ -11,6 +11,7 @@ import SwiftUI
 struct TASKApp: App {
     @StateObject var navigation = Navigation()
     @StateObject var userViewModel = UserViewModel(userModel: UserModel())
+    @StateObject var postViewModel = PostViewModel(posts: [])
     
     var body: some Scene {
         WindowGroup {
@@ -19,6 +20,7 @@ struct TASKApp: App {
                 .onAppear {
                     // 一個一個註冊 ViewModel
                     navigation.register(userViewModel)
+                    navigation.register(postViewModel)
                     // 未來有新的 ViewModel 就再加一行
                     
                     // 轉畫面

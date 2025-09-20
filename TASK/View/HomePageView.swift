@@ -9,6 +9,8 @@ import SwiftUI
 
 // 首頁視圖
 struct HomePageView: View {
+    
+    
     // test ///////////////////////
     let groupImage: [Image] = [
         Image("Monkey"),
@@ -43,6 +45,7 @@ struct HomePageView: View {
 
     @EnvironmentObject var navigation: Navigation
     @EnvironmentObject var userViewModel: UserViewModel
+    @EnvironmentObject var postViewModel: PostViewModel
     
     var body: some View {
         NavigationView {

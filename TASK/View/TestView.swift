@@ -9,10 +9,19 @@ import SwiftUI
 import CryptoKit
 
 struct TestView: View {
+    @EnvironmentObject var postViewModel: PostViewModel
+    
     var body: some View {
-        AsyncImage(url: URL(string: "https://testbase.yyang9102.workers.dev/icon/706.png"))
+     
+        VStack {
             
-        
+        }
+        .onAppear() {
+            Task {
+                await postViewModel.loadMorePosts()
+
+            }
+        }
     }
 }
 
@@ -20,4 +29,5 @@ struct TestView: View {
 
 #Preview {
     TestView()
+        .environmentObject(PostViewModel(posts: []))
 }
