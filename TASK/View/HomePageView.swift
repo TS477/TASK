@@ -17,31 +17,6 @@ struct HomePageView: View {
         Image("Rabbit"),
         Image("Cat"),
     ]
-    
-    // 數據管理類
-    class EventManager: ObservableObject {
-        @Published var eventDatas: [EventData] = [
-            EventData(
-                proposer: "大大大老師",
-                postImage: Image("StartUpImage"),
-                eventName: "探老活動",
-                date: Date(),
-                description: "這是一個探望老人的活動",
-                isLiked: false
-            ),
-            EventData(
-                proposer: "陳大文主任",
-                postImage: Image("DemoImage2"),
-                eventName: "賣棋活動",
-                date: Date(),
-                description: "這是一個買旗活動",
-                isLiked: false
-            )
-        ]
-    }
-    
-    let eventManager: EventManager = EventManager()
-    // test ////////////////////////
 
     @EnvironmentObject var navigation: Navigation
     @EnvironmentObject var userViewModel: UserViewModel
@@ -59,10 +34,10 @@ struct HomePageView: View {
                 VStack() {
                     userAndGroupButton // 用戶和群
                     
-                    // post
+                    // post test /////////////////////////////////
                     TabView {
-                        ForEach(eventManager.eventDatas) { event in
-                            EventView(eventData: event)
+                        ForEach(postViewModel.posts) { post in
+                            EventView(proposer: "test", postImage: Image(""), eventName: post.eventName, date: post.date, description: post.description, isLiked: false)
                         }
                     }
                     .tabViewStyle(.page(indexDisplayMode: .never))
@@ -75,7 +50,11 @@ struct HomePageView: View {
             }
         }
         .navigationViewStyle(.stack)
-
+        .onAppear() {
+            Task {
+                await postViewModel.loadMorePosts()
+            }
+        }
     }
     
     // 右上角的按鈕
@@ -191,9 +170,14 @@ struct HomePageView: View {
     // post畫面
     struct EventView: View, Identifiable {
         var id: UUID = UUID()
-        @ObservedObject var eventData: EventData
-        
         @State var isDescriptionSheetPresented: Bool = false // 描述用
+        
+        var proposer: String
+        var postImage: Image
+        var eventName: String
+        var date: String
+        var description: String
+        @State var isLiked: Bool
         
         var body: some View {
             VStack(alignment: .leading, spacing:20) {
@@ -206,12 +190,12 @@ struct HomePageView: View {
                         .font(.system(size: fontSize))
                         .bold()
                         
-                    Text(eventData.proposer)
+                    Text(self.proposer)
                         .font(.system(size: fontSize))
                         
                 }
                 
-                eventData.postImage
+                self.postImage
                     .resizable()
                     .scaledToFit()
                     .frame(maxWidth: .infinity, maxHeight: 320)
@@ -224,9 +208,9 @@ struct HomePageView: View {
                         let imageSizeOffset: CGFloat = 12
                         
                         Button(action: {
-                            eventData.toggleLike()
+                            self.isLiked.toggle()
                         }) {
-                            Image(systemName: eventData.isLiked ? "heart.fill" : "heart")
+                            Image(systemName: self.isLiked ? "heart.fill" : "heart")
                                 .foregroundColor(.red)
                                 .font(.system(size: fontSize + imageSizeOffset))
                         }
@@ -254,7 +238,7 @@ struct HomePageView: View {
                             .font(.system(size: fontSize))
                             .bold()
                         
-                        Text(eventData.eventName)
+                        Text(self.eventName)
                             .font(.system(size: fontSize))
                             
                     }
@@ -265,7 +249,7 @@ struct HomePageView: View {
                             .font(.system(size: fontSize))
                             .bold()
                         
-                        Text("\(eventData.date.formatted())")
+                        Text("\(self.date)")
                             .font(.system(size: fontSize))
                     }
                     
@@ -278,7 +262,7 @@ struct HomePageView: View {
                             .foregroundColor(.blue)
                     }
                     .sheet(isPresented: $isDescriptionSheetPresented) {
-                        EventDesciptionSheetView(description: eventData.description)
+                        EventDesciptionSheetView(description: self.description)
                     }
   
                 }
@@ -321,4 +305,5 @@ struct HomePageView: View {
     HomePageView()
         .environmentObject(Navigation())
         .environmentObject(UserViewModel(userModel: UserModel()))
+        .environmentObject(PostViewModel(posts: []))
 }
