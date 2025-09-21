@@ -10,7 +10,9 @@ import Foundation
 class PostViewModel: ObservableObject {
     @Published private(set) var posts: [PostModel] = []
     private var currentPage = 0
-    private let PAGE_SIZE = 2 // 每次加載多少個個
+    private let PAGE_SIZE = 5 // 每次加載多少個個
+    
+    static let POSTER_URL: String = "https://task.aifabula784.workers.dev/post/poster/"
     
     init(posts: [PostModel]) {
         self.posts = posts

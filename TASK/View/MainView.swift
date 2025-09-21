@@ -85,13 +85,16 @@ struct MainView: View {
 
 #Preview {
     let navigation = Navigation()
-    let userViewModel = UserViewModel(userModel: UserModel()) // 創建獨立的 ViewModel 實例
+    let userViewModel = UserViewModel(userModel: UserModel())
+    let postViewModel = PostViewModel(posts: [])
+    // 創建獨立的 ViewModel 實例
     
     return MainView()
         .environmentObject(navigation)
         .onAppear {
             // 註冊 ViewModel
             navigation.register(userViewModel)
+            navigation.register(postViewModel)
             // 初始化畫面
             navigation.changeView(AnyView(AppLoginView()), needButtomNavigation: false)
         }

@@ -37,11 +37,11 @@ struct HomePageView: View {
                     // post test /////////////////////////////////
                     TabView {
                         ForEach(postViewModel.posts) { post in
-                            EventView(proposer: "test", postImage: Image(""), eventName: post.eventName, date: post.date, description: post.description, isLiked: false)
+                            EventView(postId: post.id, proposer: post.proposer, postImage: Image(""), eventName: post.eventName, date: post.date, description: post.description, isLiked: false)
                         }
                     }
                     .tabViewStyle(.page(indexDisplayMode: .never))
-                    .frame(height: 500)
+                    .frame(height: 800)
                     
                     Spacer()
                 }
@@ -113,21 +113,6 @@ struct HomePageView: View {
                                 )
                         )
                         .padding(.leading, 12)
-                        /*
-                        AsyncImage(url: URL(string: "https://testbase.yyang9102.workers.dev/icon/706.png"))
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: imageSize)
-                            .clipShape(Circle())
-                            .overlay(
-                                Circle()
-                                    .stroke(lineWidth: 4)
-                                    .fill(
-                                        Gradient(colors: [.red, .blue])
-                                    )
-                            )
-                            .padding(.leading, 12)
-                         */
                     }
                     
                     ForEach(0..<groupImage.count, id: \.self) { index in
@@ -172,6 +157,7 @@ struct HomePageView: View {
         var id: UUID = UUID()
         @State var isDescriptionSheetPresented: Bool = false // 描述用
         
+        var postId: Int
         var proposer: String
         var postImage: Image
         var eventName: String
@@ -180,10 +166,10 @@ struct HomePageView: View {
         @State var isLiked: Bool
         
         var body: some View {
-            VStack(alignment: .leading, spacing:20) {
+            VStack(alignment: .leading, spacing: 20) {
                 // 發起人
                 HStack () {
-                    let fontSize: CGFloat = 20
+                    let fontSize: CGFloat = 24
                     
                     
                     Text("發起人:")
@@ -195,13 +181,19 @@ struct HomePageView: View {
                         
                 }
                 
-                self.postImage
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: .infinity, maxHeight: 320)
+                AsyncImage(url: URL(string: "\(PostViewModel.POSTER_URL + String(self.postId)).png")) { image in
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 500)
+                } placeholder: {
+                    // 加載中的佔位符
+                    ProgressView()
+                }
+                .frame(maxWidth: .infinity)
                 
                 VStack(alignment: .leading, spacing: 4) {
-                    let fontSize: CGFloat = 18
+                    let fontSize: CGFloat = 24
                     
                     // 點贊，評論，分享
                     HStack(spacing: 14) {
@@ -270,30 +262,6 @@ struct HomePageView: View {
             .padding(.horizontal, 20)
             .padding(.vertical, 10)
             // .background(Color.gray.opacity(0.15))
-        }
-    }
-    
-    // 用於創建post的數據
-    class EventData: ObservableObject, Identifiable {
-        let id: UUID = UUID()
-        public var proposer: String
-        public var postImage: Image
-        public var eventName: String
-        public var date: Date
-        public var description: String
-        @Published public var isLiked: Bool
-        
-        init(proposer: String, postImage: Image, eventName: String, date: Date, description: String, isLiked: Bool) {
-            self.proposer = proposer
-            self.postImage = postImage
-            self.eventName = eventName
-            self.date = date
-            self.description = description
-            self.isLiked = isLiked
-        }
-        
-        func toggleLike() {
-            self.isLiked = !self.isLiked
         }
     }
 }

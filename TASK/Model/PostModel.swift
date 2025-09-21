@@ -21,8 +21,8 @@ struct PostModel: Codable, Identifiable {
     let abilityVal8: Int
     let description: String
     let date: String
-    let postUrl: String?
-    let responseTeacherId: Int?
+    let postUrl: String
+    let proposer: String
     
     // 對應 JSON 的 key 命名
     enum CodingKeys: String, CodingKey {
@@ -40,6 +40,6 @@ struct PostModel: Codable, Identifiable {
         case description
         case date
         case postUrl = "post_url"
-        case responseTeacherId = "response_teacher_id"
+        case proposer
     }
 }
