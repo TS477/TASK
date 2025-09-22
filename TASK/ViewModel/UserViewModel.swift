@@ -16,19 +16,19 @@ class UserViewModel: ObservableObject {
     
     var id: Int { userModel.id }
     var name: String { userModel.name }
-    var imageUrl: String { userModel.icon_url }
-    var schoolName: String { userModel.school_name }
+    var imageUrl: String { userModel.iconUrl }
+    var schoolName: String { userModel.schoolName }
     var age: Int { userModel.age }
     
-    var abilityVal1: Int { userModel.ability_val1 }
-    var abilityVal2: Int { userModel.ability_val2 }
-    var abilityVal3: Int { userModel.ability_val3 }
-    var abilityVal4: Int { userModel.ability_val4 }
-    var abilityVal5: Int { userModel.ability_val5 }
-    var abilityVal6: Int { userModel.ability_val6 }
-    var abilityVal7: Int { userModel.ability_val7 }
-    var abilityVal8: Int { userModel.ability_val8 }
-    var abilityValCustomaized: Int { userModel.ability_val_customized }
+    var abilityVal1: Int { userModel.abilityVal1 }
+    var abilityVal2: Int { userModel.abilityVal2 }
+    var abilityVal3: Int { userModel.abilityVal3 }
+    var abilityVal4: Int { userModel.abilityVal4 }
+    var abilityVal5: Int { userModel.abilityVal5 }
+    var abilityVal6: Int { userModel.abilityVal6 }
+    var abilityVal7: Int { userModel.abilityVal7 }
+    var abilityVal8: Int { userModel.abilityVal8 }
+    // var abilityValCustomaized: Int { userModel.abilityValCustomized }
     
     init(userModel: UserModel) {
         self.userModel = userModel
