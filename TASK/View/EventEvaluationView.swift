@@ -37,7 +37,7 @@ struct PeerReview: Identifiable, Equatable {
 }
 
 // 主视图
-struct ActivityEvaluationView: View {
+struct EventEvaluationView: View {
     let activity: Activity
     @State private var teacherComment = TeacherComment(
         content: "同学们在这次团队建设中表现非常出色，展现了良好的协作精神和创新能力。特别是小组讨论环节，大家积极参与，提出了很多有价值的建议。",
@@ -63,7 +63,7 @@ struct ActivityEvaluationView: View {
                     get: { expandedSections.contains("activity") },
                     set: { if $0 { expandedSections.insert("activity") } else { expandedSections.remove("activity") } }
                 )) {
-                    ActivityInfoSection(activity: activity)
+                    EventInfoSection(activity: activity)
                 } label: {
                     SectionHeader(title: "活动信息", systemImage: "info.circle")
                 }
@@ -132,7 +132,7 @@ struct ActivityEvaluationView: View {
 }
 
 // 活动信息部分
-struct ActivityInfoSection: View {
+struct EventInfoSection: View {
     let activity: Activity
     
     var body: some View {
@@ -502,7 +502,7 @@ func generateInitialReviews(for students: [Student]) -> [PeerReview] {
     return reviews
 }
 
-// 示例数据
+// 示例数据 ///////////////////
 let sampleActivity = Activity(
     name: "团队建设活动",
     description: "本次团队建设活动旨在增强团队凝聚力，通过一系列协作游戏和讨论环节，促进成员之间的沟通与理解。活动包括破冰游戏、小组讨论、团队挑战等环节。",
@@ -519,6 +519,6 @@ let sampleActivity = Activity(
 // 预览
 struct ActivityEvaluationView_Previews: PreviewProvider {
     static var previews: some View {
-        ActivityEvaluationView(activity: sampleActivity)
+        EventEvaluationView(activity: sampleActivity)
     }
 }

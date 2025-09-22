@@ -39,6 +39,7 @@ struct EventOption: View {
                 Spacer()
             }
         }
+        .navigationViewStyle(.stack)
     }
     
     private func handleButtonTap(_ title: String) {
@@ -50,7 +51,8 @@ struct EventOption: View {
         case "AI Chat":
             buttomNavigation.changeView(AnyView(AIChatView()), needButtomNavigation: true)
         case "互評":
-            print("打開互評功能")
+            buttomNavigation
+                .changeView(AnyView(EventEvaluationView(activity: sampleActivity)), needButtomNavigation: true)
         case "問卷調查":
             print("打開問卷調查")
         default:
