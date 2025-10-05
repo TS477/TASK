@@ -26,6 +26,7 @@ struct MainView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity) // 顯示現在的畫面
             
             if navigation.needButtomNavigation { // 根據需求決定是否顯示底部引導
+                
                 CustomTabBar(tabs: myTabs).offset(y: 20)
             }
         }
