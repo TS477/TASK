@@ -18,12 +18,11 @@ struct HomePageView: View {
         Image("Cat"),
     ]
 
-    @EnvironmentObject var navigation: Navigation
     @EnvironmentObject var userViewModel: UserViewModel
     @EnvironmentObject var postViewModel: PostViewModel
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 // 背景
                 Color(UIColor.systemBackground)
@@ -34,19 +33,19 @@ struct HomePageView: View {
                 VStack() {
                     userAndGroupButton // 用戶和群
                     
-                    // post test /////////////////////////////////
                     TabView {
                         ForEach(postViewModel.posts) { post in
+                            // like test //////////////////////////
                             EventView(postId: post.id, proposer: post.proposer, postImage: Image(""), eventName: post.eventName, date: post.date, description: post.description, isLiked: false)
                         }
                     }
                     .tabViewStyle(.page(indexDisplayMode: .never))
-                    .frame(height: 800)
+                    // .frame(height: 500)
                     
                     Spacer()
                 }
-                .navigationBarTitle("才庫", displayMode: .large)
                 .navigationBarItems(trailing: rightTopbutton)
+                .navigationTitle(Text("才庫"))
             }
         }
         .navigationViewStyle(.stack)
@@ -85,69 +84,87 @@ struct HomePageView: View {
     
     // 個人和群的部分
     private var userAndGroupButton: some View {
-        HStack(spacing:30) {
+        HStack(spacing:10) {
             let imageSize: CGFloat = 90
         
             // group components
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 20) {
                     // user button
-                    Button(action: {
-                        navigation.changeView(AnyView(MenuView()), needButtomNavigation: true)
-                    }) {
-                        AsyncImage(url: URL(string: "\(userViewModel.mainUrl + userViewModel.iconUrl + String(userViewModel.id)).png")) { image in
-                            image
-                                .resizable()
-                                .scaledToFit()
-                        } placeholder: {
-                            // 加載中的佔位符
-                            ProgressView()
-                        }
-                        .frame(width: imageSize)
-                        .clipShape(Circle())
-                        .overlay(
-                            Circle()
-                                .stroke(lineWidth: 4)
-                                .fill(
-                                    Gradient(colors: [.red, .blue])
-                                )
-                        )
-                        .padding(.leading, 12)
+                    AsyncImage(url: URL(string: "\(userViewModel.mainUrl + userViewModel.iconUrl + String(userViewModel.id)).png")) { image in
+                        image
+                            .resizable()
+                            .scaledToFit()
+                    } placeholder: {
+                        // 加載中的佔位符
+                        ProgressView()
                     }
+                    .frame(width: imageSize, height: imageSize)
+                    .clipShape(Circle())
+                    .overlay(
+                        Circle()
+                            .stroke(lineWidth: 4)
+                            .fill(
+                                Gradient(colors: [.red, .blue])
+                            )
+                    )
+                    .padding(.leading, 12)
                     
                     ForEach(0..<groupImage.count, id: \.self) { index in
                         GroupButton(groupImage: groupImage[index], imageSize: imageSize)
                     }
                 }
+                // 頭像padding
                 .padding(.vertical, 2)
                 .padding(.horizontal, 2)
             }
             
         }
-        .padding(.vertical)
-
     }
     
     // 群按鈕
     private struct GroupButton: View {
-        @EnvironmentObject var buttonNavigation: Navigation
+        enum groupMenuItem: String, CaseIterable, Identifiable, Hashable {
+            case eventOption = "群組選項"
+            case AIChat = "AIChat"
+            
+            var id: String { rawValue }
+        }
+        
+        @ViewBuilder
+        private func groupDestinationView(for item: groupMenuItem) -> some View {
+            switch item {
+            case .eventOption:
+                EventOption()
+            case .AIChat:
+                AIChatView()
+            }
+        }
+        
+        @State private var groupNavigationPath = NavigationPath()
         
         var groupImage: Image
         var imageSize: CGFloat
         
         var body: some View {
-            Button(action: {
-                self.buttonNavigation.changeView(AnyView(EventOption()), needButtomNavigation: true)
-            }) {
-                groupImage
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: imageSize)
-                    .clipShape(Circle())
-                    .overlay(
-                        Circle()
-                            .stroke(lineWidth: 4)
-                    )
+            // test ////////////////////////////
+            NavigationStack(path: $groupNavigationPath) {
+                Button(action: {
+                    groupNavigationPath.append(groupMenuItem.eventOption)
+                }) {
+                    groupImage
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: imageSize)
+                        .clipShape(Circle())
+                        .overlay(
+                            Circle()
+                                .stroke(lineWidth: 4)
+                        )
+                }
+                .navigationDestination(for: groupMenuItem.self) { item in
+                    groupDestinationView(for: item)
+                }
             }
         }
     }
@@ -185,7 +202,7 @@ struct HomePageView: View {
                     image
                         .resizable()
                         .scaledToFit()
-                        .frame(height: 500)
+                        .frame(height: 300)
                 } placeholder: {
                     // 加載中的佔位符
                     ProgressView()
@@ -271,7 +288,6 @@ struct HomePageView: View {
 
 #Preview {
     HomePageView()
-        .environmentObject(Navigation())
         .environmentObject(UserViewModel(userModel: UserModel()))
         .environmentObject(PostViewModel(posts: []))
 }

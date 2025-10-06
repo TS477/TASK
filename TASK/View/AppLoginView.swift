@@ -9,9 +9,9 @@ import SwiftUI
 
 
 struct AppLoginView: View {
-    @EnvironmentObject var navigation: Navigation
     @EnvironmentObject var userViewModel: UserViewModel
     
+    @Binding var success: Bool
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var rememberMe: Bool = false
@@ -148,19 +148,22 @@ struct AppLoginView: View {
     }
     
     private func login() {
-        userViewModel.fetchUser(userId: Int(username) ?? -1, password: self.password) { result in
-            switch result {
-            case .success(_):
-                print("用戶登錄成功")
-                
-                navigation.changeView(AnyView(HomePageView()), needButtomNavigation: true)
-                
-            case .failure(let error):
-                print("获取用户失败: \(error)")
-                
-                self.isFailedLogin = true
+        DispatchQueue.main.async {
+            userViewModel.fetchUser(userId: Int(username) ?? -1, password: self.password) { result in
+                switch result {
+                case .success(_):
+                    print("用戶登錄成功")
+                    
+                    success.toggle()
+                    
+                case .failure(let error):
+                    print("获取用户失败: \(error)")
+                    
+                    self.isFailedLogin = true
+                }
             }
         }
+    
     }
 }
 
@@ -241,7 +244,8 @@ struct ForgotPasswordView: View {
 }
 
 #Preview() {
-    AppLoginView()
-        .environmentObject(Navigation())
+    @State var isLoggedIn: Bool = false
+    
+    AppLoginView(success: $isLoggedIn)
         .environmentObject(UserViewModel(userModel: UserModel()))
 }

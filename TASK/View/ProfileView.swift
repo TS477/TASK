@@ -166,7 +166,7 @@ struct AttributeRow: View {
                 .font(.system(.body, design: .monospaced))
                 .frame(width: 30, alignment: .trailing) // 固定寬度確保對齊
         }
-        .frame(height: 80) // 固定每行高度
+        .frame(height: 40) // 固定每行高度
     }
 }
 

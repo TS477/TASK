@@ -9,23 +9,19 @@ import SwiftUI
 
 @main
 struct TASKApp: App {
-    @StateObject var navigation = Navigation()
     @StateObject var userViewModel = UserViewModel(userModel: UserModel())
     @StateObject var postViewModel = PostViewModel(posts: [])
     
     var body: some Scene {
         WindowGroup {
             MainView()
-                .environmentObject(navigation)
-                .onAppear {
-                    // 一個一個註冊 ViewModel
-                    navigation.register(userViewModel)
-                    navigation.register(postViewModel)
-                    // 未來有新的 ViewModel 就再加一行
-                    
-                    // 轉畫面
-                    navigation.changeView(AnyView(AppLoginView()), needButtomNavigation: false)
-                }
+                .environmentObject(userViewModel)
+                .environmentObject(postViewModel)
         }
+    }
+    
+    init() {
+        // 鎖定為橫向
+        UIDevice.current.setValue(UIInterfaceOrientation.landscapeRight.rawValue, forKey: "orientation")
     }
 }

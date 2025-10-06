@@ -28,98 +28,96 @@ struct TargetAdjustmentView: View {
     ]
     
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 0) {
-                    // 顶部头像和学生资料区域
-                    VStack {
-                        // 头像
-                        AsyncImage(url: URL(string: "\(userViewModel.mainUrl + userViewModel.iconUrl + String(userViewModel.id)).png")) { image in
-                            image
-                                .resizable()
-                                .scaledToFit()
-                        } placeholder: {
-                            // 加載中的佔位符
-                            ProgressView()
-                        }
-                        .frame(width: 80, height: 80)
-                        .foregroundColor(.blue)
-                        
-                        /*
-                        Image(systemName: "person.circle.fill")
+        ScrollView {
+            VStack(spacing: 0) {
+                // 顶部头像和学生资料区域
+                VStack {
+                    // 头像
+                    AsyncImage(url: URL(string: "\(userViewModel.mainUrl + userViewModel.iconUrl + String(userViewModel.id)).png")) { image in
+                        image
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 80, height: 80)
-                            .foregroundColor(.blue)
-                        */
-                         
-                        // 学生姓名和ID
-                        Text(userViewModel.name)
-                            .font(.title2)
-                            .fontWeight(.bold)
-                        
-                        Text("Student ID: \(userViewModel.id)")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                        
+                    } placeholder: {
+                        // 加載中的佔位符
+                        ProgressView()
                     }
-                    .padding()
-                    .background(Color(.systemGray6))
+                    .frame(width: 80, height: 80)
+                    .foregroundColor(.blue)
                     
-                    // 目标套餐描述区域
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text(targetPackage)
-                            .font(.title3)
-                            .fontWeight(.semibold)
-                        
-                        Text(description)
-                            .font(.body)
-                            .foregroundColor(.secondary)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding()
-                    .background(Color.white)
-                    .cornerRadius(10)
-                    .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
-                    .padding()
+                    /*
+                    Image(systemName: "person.circle.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 80, height: 80)
+                        .foregroundColor(.blue)
+                    */
+                     
+                    // 学生姓名和ID
+                    Text(userViewModel.name)
+                        .font(.title2)
+                        .fontWeight(.bold)
                     
-                    // 八个属性区域
-                    Text("屬性調整")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal)
+                    Text("Student ID: \(userViewModel.id)")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
                     
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), spacing: 15) {
-                        ForEach(0..<attributes.count, id: \.self) { index in
-                            AttributeView(
-                                name: attributes[index].0,
-                                value: attributes[index].1,
-                                total: 10
-                            )
-                        }
-                    }
-                    .padding()
-                    
-                    // 提交按钮
-                    Button(action: {
-                        // 提交操作
-                    }) {
-                        Text("提交")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.blue)
-                            .cornerRadius(10)
-                    }
-                    .padding(.horizontal)
-                    .padding(.bottom, 30)
                 }
+                .padding()
+                .background(Color(.systemGray6))
+                
+                // 目标套餐描述区域
+                VStack(alignment: .leading, spacing: 10) {
+                    Text(targetPackage)
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                    
+                    Text(description)
+                        .font(.body)
+                        .foregroundColor(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding()
+                .background(Color.white)
+                .cornerRadius(10)
+                .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
+                .padding()
+                
+                // 八个属性区域
+                Text("屬性調整")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
+                
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), spacing: 15) {
+                    ForEach(0..<attributes.count, id: \.self) { index in
+                        AttributeView(
+                            name: attributes[index].0,
+                            value: attributes[index].1,
+                            total: 10
+                        )
+                    }
+                }
+                .padding()
+                
+                // 提交按钮
+                Button(action: {
+                    // 提交操作
+                }) {
+                    Text("提交")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                }
+                .padding(.horizontal)
+                .padding(.bottom, 30)
             }
-            .navigationTitle("2024－2025第一學期")
-            .navigationBarTitleDisplayMode(.inline)
         }
+        .navigationTitle("2024－2025第一學期")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

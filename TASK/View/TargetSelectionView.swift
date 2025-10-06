@@ -41,9 +41,19 @@ struct TargetSelectionView: View {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                     ForEach(packages, id: \.0) { package in
-                        PackageButton(title: package.0, icon: package.1, color: package.2) {
-                            goalText = package.0
+                        NavigationLink(
+                            destination: TargetAdjustmentView()
+                        ) {
+                            PackageButton(
+                                title: package.0,
+                                icon: package.1,
+                                color: package.2,
+                            )
                         }
+                        .simultaneousGesture(TapGesture().onEnded {
+                            goalText = package.0
+                            print("點擊套餐 \(package.0)")
+                        })
                     }
                 }
                 .padding()
@@ -90,7 +100,7 @@ struct TargetSelectionView: View {
 
         guard !chatText.isEmpty else { return }
         
-        var history: String = messages.reduce("") { result, message in
+        let history: String = messages.reduce("") { result, message in
             result + message + "\n"
         }
         
@@ -107,22 +117,13 @@ struct TargetSelectionView: View {
         chatText = ""
     }
     
-}
-
-// 套餐按鈕組件
-struct PackageButton: View {
-    @EnvironmentObject var navigation: Navigation
-    
-    let title: String
-    let icon: String
-    let color: Color
-    let action: () -> Void  // 添加这个闭包参数
-    
-    var body: some View {
-        Button(action: {
-            action()  // 先执行传入的动作
-            navigation.changeView(AnyView(TargetAdjustmentView()), needButtomNavigation: true)
-        }) {
+    // 套餐按鈕組件
+    struct PackageButton: View {
+        let title: String
+        let icon: String
+        let color: Color
+        
+        var body: some View {
             VStack {
                 Image(systemName: icon)
                     .font(.title)
@@ -148,8 +149,9 @@ struct PackageButton: View {
     }
 }
 
+
+
 // 預覽
 #Preview {
     TargetSelectionView()
-        .environmentObject(Navigation())
 }
