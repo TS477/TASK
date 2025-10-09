@@ -19,7 +19,7 @@ struct MainView: View {
         }
         // test /////////////////////////////
         
-        // AppView()
+        // AppView(isLoggedIn: $isLoggedIn)
     }
 }
 

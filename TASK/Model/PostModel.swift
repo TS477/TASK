@@ -10,7 +10,6 @@ import Foundation
 struct PostModel: Codable, Identifiable {
     let id: Int
     let eventName: String
-    let schoolId: Int
     let abilityVal1: Int
     let abilityVal2: Int
     let abilityVal3: Int
@@ -26,17 +25,16 @@ struct PostModel: Codable, Identifiable {
     
     // 對應 JSON 的 key 命名
     enum CodingKeys: String, CodingKey {
-        case id
+        case id = "event_id"
         case eventName = "event_name"
-        case schoolId = "school_id"
-        case abilityVal1 = "ability_val1"
-        case abilityVal2 = "ability_val2"
-        case abilityVal3 = "ability_val3"
-        case abilityVal4 = "ability_val4"
-        case abilityVal5 = "ability_val5"
-        case abilityVal6 = "ability_val6"
-        case abilityVal7 = "ability_val7"
-        case abilityVal8 = "ability_val8"
+        case abilityVal1 = "ability1"
+        case abilityVal2 = "ability2"
+        case abilityVal3 = "ability3"
+        case abilityVal4 = "ability4"
+        case abilityVal5 = "ability5"
+        case abilityVal6 = "ability6"
+        case abilityVal7 = "ability7"
+        case abilityVal8 = "ability8"
         case description
         case date
         case postUrl = "post_url"

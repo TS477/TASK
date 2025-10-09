@@ -29,6 +29,7 @@ struct UserModel: Codable, Identifiable {
         case age
         case schoolName = "school_name"
         case name
+        case iconUrl = "icon_url"
         case abilityVal1 = "ability_val1"
         case abilityVal2 = "ability_val2"
         case abilityVal3 = "ability_val3"
