@@ -22,6 +22,8 @@ struct PostModel: Codable, Identifiable {
     let date: String
     let postUrl: String
     let proposer: String
+    let isLike: Int
+    let likeCount: Int
     
     // 對應 JSON 的 key 命名
     enum CodingKeys: String, CodingKey {
@@ -39,5 +41,7 @@ struct PostModel: Codable, Identifiable {
         case date
         case postUrl = "post_url"
         case proposer
+        case isLike = "is_like"
+        case likeCount = "like_count"
     }
 }

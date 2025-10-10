@@ -9,14 +9,24 @@ import SwiftUI
 
 @main
 struct TASKApp: App {
-    @StateObject var userViewModel = UserViewModel(userModel: UserModel())
-    @StateObject var postViewModel = PostViewModel(posts: [])
+    // 創建共享的服務層實例
+    @StateObject private var userService = UserService()
+    
+    // 創建 ViewModel，注入同一個服務層實例
+    var userViewModel: UserViewModel {
+        UserViewModel(userService: userService)
+    }
+    
+    var postViewModel: PostViewModel {
+        PostViewModel(userService: userService)
+    }
     
     var body: some Scene {
         WindowGroup {
             MainView()
-                .environmentObject(userViewModel)
-                .environmentObject(postViewModel)
+                .environmentObject(userService)  // 傳遞服務層
+                .environmentObject(userViewModel) // 傳遞 ViewModel
+                .environmentObject(postViewModel) // 傳遞 ViewModel
         }
     }
     

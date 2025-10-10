@@ -192,8 +192,15 @@ struct MenuButton: View {
 
 #Preview {
     @Previewable @State var isLoggedIn: Bool = true
+    @Previewable @StateObject var userService = UserService()
+    
+    // 創建 ViewModel，注入同一個服務層實例
+    var userViewModel: UserViewModel {
+        UserViewModel(userService: userService)
+    }
+    
     
     MenuView(isLoggedIn: $isLoggedIn)
-        .environmentObject(UserViewModel(userModel: UserModel()))
+        .environmentObject(userViewModel)
     
 }

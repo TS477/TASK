@@ -84,9 +84,21 @@ struct AppView: View {
 }
 
 #Preview {
+    @Previewable @StateObject var userService = UserService()
+    
+    // 創建 ViewModel，注入同一個服務層實例
+    var userViewModel: UserViewModel {
+        UserViewModel(userService: userService)
+    }
+    
+    var postViewModel: PostViewModel {
+        PostViewModel(userService: userService)
+    }
+    
     MainView()
-        .environmentObject(UserViewModel(userModel: UserModel()))
-        .environmentObject(PostViewModel(posts: []))
+        .environmentObject(userViewModel)
+        .environmentObject(postViewModel)
+        .environmentObject(userService)
 }
 
 

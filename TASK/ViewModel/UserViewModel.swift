@@ -9,60 +9,56 @@ import SwiftUI
 import CryptoKit
 
 class UserViewModel: ObservableObject {
-    @Published private var userModel: UserModel
+    private let userService: UserService
     
     let mainUrl: String = "https://task.aifabula784.workers.dev"
     let iconUrl: String = "/student/icon/"
     
-    var id: Int { userModel.id }
-    var name: String { userModel.name }
-    var imageUrl: String { userModel.iconUrl }
-    var schoolName: String { userModel.schoolName }
-    var age: Int { userModel.age }
+    // 計算屬性，從服務層獲取數據
+    var id: Int { userService.currentUser.id }
+    var name: String { userService.currentUser.name }
+    var imageUrl: String { userService.currentUser.iconUrl }
+    var schoolName: String { userService.currentUser.schoolName }
+    var age: Int { userService.currentUser.age }
     
-    var abilityVal1: Int { userModel.abilityVal1 }
-    var abilityVal2: Int { userModel.abilityVal2 }
-    var abilityVal3: Int { userModel.abilityVal3 }
-    var abilityVal4: Int { userModel.abilityVal4 }
-    var abilityVal5: Int { userModel.abilityVal5 }
-    var abilityVal6: Int { userModel.abilityVal6 }
-    var abilityVal7: Int { userModel.abilityVal7 }
-    var abilityVal8: Int { userModel.abilityVal8 }
-    // var abilityValCustomaized: Int { userModel.abilityValCustomized }
+    var abilityVal1: Int { userService.currentUser.abilityVal1 }
+    var abilityVal2: Int { userService.currentUser.abilityVal2 }
+    var abilityVal3: Int { userService.currentUser.abilityVal3 }
+    var abilityVal4: Int { userService.currentUser.abilityVal4 }
+    var abilityVal5: Int { userService.currentUser.abilityVal5 }
+    var abilityVal6: Int { userService.currentUser.abilityVal6 }
+    var abilityVal7: Int { userService.currentUser.abilityVal7 }
+    var abilityVal8: Int { userService.currentUser.abilityVal8 }
+    var abilityValCustomized: Int { userService.currentUser.abilityValCustomized }
     
-    init(userModel: UserModel) {
-        self.userModel = userModel
+    init(userService: UserService) {
+        self.userService = userService
     }
     
-    // test ///////////////////////////
-    // 密碼要加鹽，還有一堆注入安全等等，先測試
+    // 登入功能
     func fetchUser(userId: Int, password: String, completion: @escaping (Result<UserModel, Error>) -> Void) {
         var components = URLComponents(string: "\(self.mainUrl)/student")
         
-        let encryptedPassword: String = sha256Hash(password) // 加密密碼
+        let encryptedPassword: String = sha256Hash(password)
         components?.queryItems = [
             URLQueryItem(name: "id", value: "\(userId)"),
             URLQueryItem(name: "password", value: "\(encryptedPassword)")
-        ] // 增加id, password參數
+        ]
         
-        // 製作url
         guard let url = components?.url else {
             completion(.failure(URLError(.badURL)))
             return
         }
         
-        // 指定http方法
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
-        // 等待和接受回應
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 completion(.failure(error))
                 return
             }
             
-            // 检查HTTP状态码
             if let httpResponse = response as? HTTPURLResponse {
                 if httpResponse.statusCode != 200 {
                     completion(.failure(URLError(.badServerResponse)))
@@ -77,16 +73,18 @@ class UserViewModel: ObservableObject {
             
             do {
                 let user = try JSONDecoder().decode(UserModel.self, from: data)
+                // 更新服務層的用戶資料
+                self.userService.updateUser(user)
                 completion(.success(user))
-                self.userModel = user
             } catch {
                 completion(.failure(error))
             }
         }.resume()
     }
     
+    // 登出功能
     func deleteUser() {
-        self.userModel = UserModel()
+        userService.clearUser()
     }
     
     private func sha256Hash(_ string: String) -> String {

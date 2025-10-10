@@ -171,6 +171,13 @@ struct AttributeRow: View {
 }
 
 #Preview {
+    @Previewable @StateObject var userService = UserService()
+    
+    // 創建 ViewModel，注入同一個服務層實例
+    var userViewModel: UserViewModel {
+        UserViewModel(userService: userService)
+    }
+    
     ProfileView()
-        .environmentObject(UserViewModel(userModel: UserModel()))
+        .environmentObject(userViewModel)
 }

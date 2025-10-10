@@ -244,8 +244,14 @@ struct ForgotPasswordView: View {
 }
 
 #Preview() {
-    @State var isLoggedIn: Bool = false
+    @Previewable @State var isLoggedIn: Bool = false
+    @Previewable @StateObject var userService = UserService()
+    
+    // 創建 ViewModel，注入同一個服務層實例
+    var userViewModel: UserViewModel {
+        UserViewModel(userService: userService)
+    }
     
     AppLoginView(success: $isLoggedIn)
-        .environmentObject(UserViewModel(userModel: UserModel()))
+        .environmentObject(userViewModel)
 }

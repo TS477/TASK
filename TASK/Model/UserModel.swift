@@ -40,3 +40,21 @@ struct UserModel: Codable, Identifiable {
         case abilityVal8 = "ability_val8"
     }
 }
+
+class UserService: ObservableObject {
+    @Published var currentUser: UserModel
+    
+    init(user: UserModel = UserModel()) {
+        self.currentUser = user
+    }
+    
+    // 更新用戶資料
+    func updateUser(_ user: UserModel) {
+        self.currentUser = user
+    }
+    
+    // 清除用戶資料
+    func clearUser() {
+        self.currentUser = UserModel()
+    }
+}

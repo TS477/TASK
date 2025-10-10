@@ -36,7 +36,9 @@ struct HomePageView: View {
                     TabView {
                         ForEach(postViewModel.posts) { post in
                             // like test //////////////////////////
-                            EventView(postId: post.id, proposer: post.proposer, postImage: Image(""), eventName: post.eventName, date: post.date, description: post.description, isLiked: false)
+                            EventView(postId: post.id, proposer: post.proposer, postImage: Image(""), eventName: post.eventName, date: post.date, description: post.description, isLiked: (post.isLike != 0),
+                                likeCount: post.likeCount
+                            )
                         }
                     }
                     .tabViewStyle(.page(indexDisplayMode: .never))
@@ -181,6 +183,7 @@ struct HomePageView: View {
         var date: String
         var description: String
         @State var isLiked: Bool
+        @State var likeCount: Int
         
         var body: some View {
             VStack(alignment: .leading, spacing: 20) {
@@ -198,7 +201,7 @@ struct HomePageView: View {
                         
                 }
                 
-                AsyncImage(url: URL(string: "\(PostViewModel.POSTER_URL + String(self.postId)).png")) { image in
+                AsyncImage(url: URL(string: "\(PostViewModel.POSTER_URL + "/" + String(self.postId)).png")) { image in
                     image
                         .resizable()
                         .scaledToFit()
@@ -216,12 +219,25 @@ struct HomePageView: View {
                     HStack(spacing: 14) {
                         let imageSizeOffset: CGFloat = 12
                         
-                        Button(action: {
-                            self.isLiked.toggle()
-                        }) {
-                            Image(systemName: self.isLiked ? "heart.fill" : "heart")
-                                .foregroundColor(.red)
-                                .font(.system(size: fontSize + imageSizeOffset))
+                        HStack(spacing: 4) {
+                            
+                            Button(action: {
+                                if (self.isLiked) {
+                                    likeCount -= 1
+                                }
+                                else {
+                                    likeCount += 1
+                                }
+                                
+                                self.isLiked.toggle()
+                            }) {
+                                Image(systemName: self.isLiked ? "heart.fill" : "heart")
+                                    .foregroundColor(.red)
+                                    .font(.system(size: fontSize + imageSizeOffset))
+                            }
+                            
+                            Text(String(self.likeCount))
+                                .font(.system(size: fontSize))
                         }
                         
                         Button(action: {
@@ -287,7 +303,19 @@ struct HomePageView: View {
 
 
 #Preview {
-    HomePageView()
-        .environmentObject(UserViewModel(userModel: UserModel()))
-        .environmentObject(PostViewModel(posts: []))
+    @Previewable @StateObject var userService = UserService()
+    
+    // 創建 ViewModel，注入同一個服務層實例
+    var userViewModel: UserViewModel {
+        UserViewModel(userService: userService)
+    }
+    
+    var postViewModel: PostViewModel {
+        PostViewModel(userService: userService)
+    }
+    
+    MainView()
+        .environmentObject(userViewModel)
+        .environmentObject(postViewModel)
+        .environmentObject(userService)
 }
