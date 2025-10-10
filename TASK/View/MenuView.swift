@@ -122,6 +122,7 @@ struct MenuView: View {
                 action: { navigationPath.append(MenuItem.record) }
             )
             
+            /*
             MenuButton(
                 title: "商店",
                 icon: "cart.fill",
@@ -142,6 +143,7 @@ struct MenuView: View {
                 color: .gray,
                 action: { navigationPath.append(MenuItem.settings) }
             )
+             */
             
             MenuButton(
                 title: "登出",

@@ -79,7 +79,7 @@ struct ActivityListView: View {
                     listView
                 }
             }
-            .navigationTitle("活动选项")
+            .navigationTitle("活動一覽")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     if UIDevice.current.userInterfaceIdiom == .pad {

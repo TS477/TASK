@@ -251,7 +251,4 @@ struct ForgotPasswordView: View {
     var userViewModel: UserViewModel {
         UserViewModel(userService: userService)
     }
-    
-    AppLoginView(success: $isLoggedIn)
-        .environmentObject(userViewModel)
 }

@@ -62,14 +62,12 @@ struct AppView: View {
                     switch section {
                     case .home:
                         HomePageView()
-                            .onAppear() {
-                            }
                     case .menu:
                         MenuView(isLoggedIn: $isLoggedIn)
                     case .search:
                         Text("搜索內容待完成")
                     case .allEvent:
-                        Text("活動一覽")
+                        ActivityListView()
                     }
                 } else {
                     ContentUnavailableView(

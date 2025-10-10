@@ -1,5 +1,5 @@
 //
-//  Eventjoin.swift
+//  EventJoin.swift
 //  TASK
 //
 //  Created by CHEUNG Ka Tsun on 1/9/2025.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Eventjoin: View {
+struct EventJoin: View {
     @State var inputText: String = ""
     @State var recieveText: String = ""
     
@@ -54,5 +54,5 @@ struct Eventjoin: View {
 }
 
 #Preview {
-    Eventjoin()
+    EventJoin()
 }
