@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct TargetSelectionView: View {
-    @State private var goalText = ""
     @State private var chatText = ""
     @State private var messages: [String] = []
     
@@ -24,18 +23,15 @@ struct TargetSelectionView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            // 頂部 - 目標設定
+            // 頂部 - 目標設定標題
             VStack {
-                Text("設定你的目標")
-                    .font(.title2)
+                Text("設定目標")
+                    .font(.title)
                     .bold()
                 
-                TextField("輸入你的目標...", text: $goalText)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding(.horizontal)
             }
             .padding()
-            .background(Color.gray.opacity(0.1))
+            .background(Color.gray.opacity(0))
             
             // 中間 - 目標套餐
             ScrollView {
@@ -51,7 +47,6 @@ struct TargetSelectionView: View {
                             )
                         }
                         .simultaneousGesture(TapGesture().onEnded {
-                            goalText = package.0
                             print("點擊套餐 \(package.0)")
                         })
                     }
@@ -76,7 +71,7 @@ struct TargetSelectionView: View {
                     }
                     .padding()
                 }
-                .frame(height: 400)
+                .frame(height: 170)
                 
                 HStack {
                     TextField("問AI關於目標的建議...", text: $chatText)
@@ -97,7 +92,6 @@ struct TargetSelectionView: View {
     }
     
     func sendMessage() {
-
         guard !chatText.isEmpty else { return }
         
         let history: String = messages.reduce("") { result, message in
@@ -148,8 +142,6 @@ struct TargetSelectionView: View {
         }
     }
 }
-
-
 
 // 預覽
 #Preview {

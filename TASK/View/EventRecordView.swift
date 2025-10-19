@@ -16,7 +16,7 @@ struct EventRecordView: View {
     }
 }
 
-// 定义能力枚举
+// 定義能力枚舉
 enum Ability: String, CaseIterable, Identifiable {
     var id: String { self.rawValue }
     case learning = "學習能力"
@@ -29,14 +29,14 @@ enum Ability: String, CaseIterable, Identifiable {
     case adaptability = "適應能力"
 }
 
-// 定义评语结构
+// 定義評語結構
 struct ActivityComment: Identifiable {
     let id = UUID()
     let author: String
     let content: String
 }
 
-// 定义活动结构
+// 定義活動結構
 struct ActivityItem: Identifiable {
     let id = UUID()
     let date: Date
@@ -45,7 +45,7 @@ struct ActivityItem: Identifiable {
     let comments: [ActivityComment]
 }
 
-// 主列表视图
+// 主列表視圖
 struct ActivityListsView: View {
     let activities: [ActivityItem]
     
@@ -78,14 +78,14 @@ struct ActivityListsView: View {
     }
 }
 
-// 活动行视图
+// 活動行視圖
 struct ActivityItemRow: View {
     let activity: ActivityItem
     let dateFormatter: DateFormatter
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            // 日期和活动名称
+            // 日期和活動名稱
             HStack(alignment: .top) {
                 Text(dateFormatter.string(from: activity.date))
                     .font(.system(size: 20))
@@ -98,7 +98,7 @@ struct ActivityItemRow: View {
                     .multilineTextAlignment(.trailing)
             }
             
-            // 能力标签
+            // 能力標籤
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ForEach(activity.abilities) { ability in
@@ -112,7 +112,7 @@ struct ActivityItemRow: View {
                 }
             }
             
-            // 评语预览
+            // 評語預覽
             if !activity.comments.isEmpty {
                 VStack(alignment: .leading, spacing: 6) {
                     Text("評語:")
@@ -136,7 +136,7 @@ struct ActivityItemRow: View {
     }
 }
 
-// 活动详情视图
+// 活動詳情視圖
 struct ActivityDetailView: View {
     let activity: ActivityItem
     let dateFormatter: DateFormatter = {
@@ -149,7 +149,7 @@ struct ActivityDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                // 活动标题和日期
+                // 活動標題和日期
                 VStack(alignment: .leading, spacing: 12) {
                     Text(activity.name)
                         .font(.system(size: 24, weight: .bold))
@@ -161,7 +161,7 @@ struct ActivityDetailView: View {
                 
                 Divider()
                 
-                // 能力标签
+                // 能力標籤
                 VStack(alignment: .leading, spacing: 12) {
                     Text("相關能力")
                         .font(.system(size: 22, weight: .semibold))
@@ -183,7 +183,7 @@ struct ActivityDetailView: View {
                 
                 Divider()
                 
-                // 评语
+                // 評語
                 VStack(alignment: .leading, spacing: 16) {
                     Text("評語")
                         .font(.system(size: 22, weight: .semibold))
@@ -217,7 +217,7 @@ struct ActivityDetailView: View {
     }
 }
 
-// 创建示例数据的函数
+// 創建範例數據的函數
 func createSampleActivities() -> [ActivityItem] {
     let calendar = Calendar.current
     
@@ -256,7 +256,7 @@ func createSampleActivities() -> [ActivityItem] {
     ].sorted(by: { $0.date > $1.date })
 }
 
-// 预览
+// 預覽
 struct EventRecordView_Previews: PreviewProvider {
     static var previews: some View {
         EventRecordView()

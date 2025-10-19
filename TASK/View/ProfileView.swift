@@ -12,9 +12,9 @@ struct ProfileView: View {
     
     var body: some View {
         VStack(spacing: 30) {
-            // 顶部头像和信息区域 - 修改为水平布局
+            // 頂部頭像和信息區域 - 修改為水平佈局
             HStack(alignment: .top, spacing: 40) {
-                // 头像在左侧
+                // 頭像在左側
                 AsyncImage(url: URL(string: "\(userViewModel.mainUrl + userViewModel.iconUrl + String(userViewModel.id)).png")) { image in
                     image
                         .resizable()
@@ -31,7 +31,7 @@ struct ProfileView: View {
                         .shadow(radius: 3)
                 )
                 
-                // 学校、姓名、年龄在右侧
+                // 學校、姓名、年齡在右側
                 VStack(alignment: .leading, spacing: 8) {
                     Text(userViewModel.schoolName)
                         .font(.system(size: 20, weight: .bold))
@@ -48,7 +48,7 @@ struct ProfileView: View {
             .padding(.horizontal)
             .padding(.top, 15)
             
-            // 属性值区域
+            // 屬性數值區域
             VStack(alignment: .leading, spacing: 10) {
                 Text("屬性數值")
                     .font(.headline)
@@ -95,7 +95,7 @@ struct ProfileView: View {
             .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
             .padding(.horizontal)
             
-            // 套餐选择框
+            // 套餐選擇框
             VStack(alignment: .leading, spacing: 10) {
                 Text("當前套餐")
                     .font(.headline)
@@ -133,27 +133,27 @@ struct ProfileView: View {
     }
 }
 
-// 属性行组件
+// 屬性行組件
 struct AttributeRow: View {
     let color: Color
     let value: CGFloat
     
     var body: some View {
         HStack(spacing: 20) {
-            // 颜色头像
+            // 顏色頭像
             Circle()
                 .fill(color)
                 .frame(width: 30, height: 30)
             
-            // 进度条
+            // 進度條
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
-                    // 背景条
+                    // 背景條
                     RoundedRectangle(cornerRadius: 20)
                         .fill(Color.gray.opacity(0.3))
                         .frame(height: 15)
                     
-                    // 进度条
+                    // 進度條
                     RoundedRectangle(cornerRadius: 20)
                         .fill(color)
                         .frame(width: geometry.size.width * (value / 100), height: 15)
@@ -161,7 +161,7 @@ struct AttributeRow: View {
             }
             .frame(height: 15) // 固定高度與圓點對齊
             
-            // 数值显示
+            // 數值顯示
             Text("\(Int(value))%")
                 .font(.system(.body, design: .monospaced))
                 .frame(width: 30, alignment: .trailing) // 固定寬度確保對齊

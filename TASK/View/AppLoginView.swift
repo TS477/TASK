@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct AppLoginView: View {
     @EnvironmentObject var userViewModel: UserViewModel
     
@@ -20,7 +19,7 @@ struct AppLoginView: View {
     
     var body: some View {
         ZStack {
-            // 背景 - 柔和的渐变
+            // 背景 - 柔和的漸變
             LinearGradient(gradient: Gradient(colors: [Color(red: 0.95, green: 0.97, blue: 1.0),
                                                        Color(red: 0.88, green: 0.94, blue: 1.0)]),
                            startPoint: .topLeading,
@@ -28,7 +27,7 @@ struct AppLoginView: View {
             .ignoresSafeArea()
             
             VStack(spacing: 30) {
-                // 标题区域
+                // 標題區域
                 VStack(spacing: 15) {
                     Image(systemName: "book.closed.fill")
                         .font(.system(size: 60))
@@ -50,15 +49,15 @@ struct AppLoginView: View {
                 }
                 .padding(.top, 40)
                 
-                // 表单区域
+                // 表單區域
                 VStack(spacing: 20) {
-                    // 用户名输入框
+                    // 用戶名輸入框
                     HStack {
                         Image(systemName: "person.fill")
                             .foregroundColor(.blue)
                             .frame(width: 30)
                         
-                        TextField("用户名/邮箱", text: $username)
+                        TextField("用戶名/郵箱", text: $username)
                             .font(.system(size: 20, design: .rounded))
                             .textContentType(.emailAddress)
                             .autocapitalization(.none)
@@ -70,13 +69,13 @@ struct AppLoginView: View {
                             .shadow(color: .blue.opacity(0.1), radius: 5, x: 0, y: 2)
                     )
                     
-                    // 密码输入框
+                    // 密碼輸入框
                     HStack {
                         Image(systemName: "lock.fill")
                             .foregroundColor(.blue)
                             .frame(width: 30)
                         
-                        SecureField("密码", text: $password)
+                        SecureField("密碼", text: $password)
                             .font(.system(size: 20, design: .rounded))
                     }
                     .padding()
@@ -86,10 +85,10 @@ struct AppLoginView: View {
                             .shadow(color: .blue.opacity(0.1), radius: 5, x: 0, y: 2)
                     )
                     
-                    // 记住我和忘记密码
+                    // 記住我和忘記密碼
                     HStack {
                         Toggle(isOn: $rememberMe) {
-                            Text("记住我")
+                            Text("記住我")
                                 .font(.system(size: 18, design: .rounded))
                                 .foregroundColor(.gray)
                         }
@@ -100,7 +99,7 @@ struct AppLoginView: View {
                         Button(action: {
                             showForgotPassword.toggle()
                         }) {
-                            Text("忘记密码?")
+                            Text("忘記密碼?")
                                 .font(.system(size: 18, design: .rounded))
                                 .foregroundColor(.blue)
                         }
@@ -109,12 +108,12 @@ struct AppLoginView: View {
                 }
                 .padding(.horizontal, 40)
                 
-                // 登录按钮
+                // 登錄按鈕
                 Button(action: {
-                    // 处理登录逻辑
+                    // 處理登錄邏輯
                     login()
                 }) {
-                    Text("登录")
+                    Text("登錄")
                         .font(.system(size: 22, weight: .semibold, design: .rounded))
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
@@ -157,7 +156,7 @@ struct AppLoginView: View {
                     success.toggle()
                     
                 case .failure(let error):
-                    print("获取用户失败: \(error)")
+                    print("獲取用戶失敗: \(error)")
                     
                     self.isFailedLogin = true
                 }
@@ -167,7 +166,7 @@ struct AppLoginView: View {
     }
 }
 
-// 自定义复选框样式
+// 自定義複選框樣式
 struct CheckboxToggleStyle: ToggleStyle {
     func makeBody(configuration: Configuration) -> some View {
         Button(action: {
@@ -182,7 +181,7 @@ struct CheckboxToggleStyle: ToggleStyle {
     }
 }
 
-// 忘记密码视图
+// 忘記密碼視圖
 struct ForgotPasswordView: View {
     @State private var email: String = ""
     @Environment(\.presentationMode) var presentationMode
@@ -194,16 +193,16 @@ struct ForgotPasswordView: View {
                     .font(.system(size: 50))
                     .foregroundColor(.blue)
                 
-                Text("重置密码")
+                Text("重置密碼")
                     .font(.system(size: 28, weight: .bold, design: .rounded))
                 
-                Text("请输入你的邮箱地址，我们将发送密码重置链接")
+                Text("請輸入你的郵箱地址，我們將發送密碼重置連結")
                     .font(.system(size: 18, design: .rounded))
                     .foregroundColor(.gray)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 30)
                 
-                TextField("邮箱地址", text: $email)
+                TextField("郵箱地址", text: $email)
                     .font(.system(size: 20, design: .rounded))
                     .textContentType(.emailAddress)
                     .autocapitalization(.none)
@@ -215,10 +214,10 @@ struct ForgotPasswordView: View {
                     .padding(.horizontal, 40)
                 
                 Button(action: {
-                    // 处理重置密码逻辑
+                    // 處理重置密碼邏輯
                     presentationMode.wrappedValue.dismiss()
                 }) {
-                    Text("发送重置链接")
+                    Text("發送重置連結")
                         .font(.system(size: 20, weight: .semibold, design: .rounded))
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
@@ -235,7 +234,7 @@ struct ForgotPasswordView: View {
                 Spacer()
             }
             .padding(.top, 40)
-            .navigationBarTitle("忘记密码", displayMode: .inline)
+            .navigationBarTitle("忘記密碼", displayMode: .inline)
             .navigationBarItems(trailing: Button("取消") {
                 presentationMode.wrappedValue.dismiss()
             })

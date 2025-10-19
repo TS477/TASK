@@ -10,12 +10,12 @@ import SwiftUI
 struct TargetAdjustmentView: View {
     @EnvironmentObject var userViewModel: UserViewModel
     
-    // 示例数据
+    // 範例數據
     let totalValue: Int = 30
     let targetPackage = "目標套餐A"
     let description = "這是目標套餐的詳細描述信息，可以包含多行內容。"
     
-    // 八个属性示例数据
+    // 八個屬性範例數據
     let attributes = [
         ("學習能力", 8),
         ("創造力", 7),
@@ -30,9 +30,9 @@ struct TargetAdjustmentView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                // 顶部头像和学生资料区域
+                // 頂部頭像和學生資料區域
                 VStack {
-                    // 头像
+                    // 頭像
                     AsyncImage(url: URL(string: "\(userViewModel.mainUrl + userViewModel.iconUrl + String(userViewModel.id)).png")) { image in
                         image
                             .resizable()
@@ -52,7 +52,7 @@ struct TargetAdjustmentView: View {
                         .foregroundColor(.blue)
                     */
                      
-                    // 学生姓名和ID
+                    // 學生姓名和ID
                     Text(userViewModel.name)
                         .font(.title2)
                         .fontWeight(.bold)
@@ -65,7 +65,7 @@ struct TargetAdjustmentView: View {
                 .padding()
                 .background(Color(.systemGray6))
                 
-                // 目标套餐描述区域
+                // 目標套餐描述區域
                 VStack(alignment: .leading, spacing: 10) {
                     Text(targetPackage)
                         .font(.title3)
@@ -83,7 +83,7 @@ struct TargetAdjustmentView: View {
                 .shadow(color: Color.black.opacity(0.1), radius: 2, x: 0, y: 1)
                 .padding()
                 
-                // 八个属性区域
+                // 八個屬性區域
                 Text("屬性調整")
                     .font(.headline)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -100,7 +100,7 @@ struct TargetAdjustmentView: View {
                 }
                 .padding()
                 
-                // 提交按钮
+                // 提交按鈕
                 Button(action: {
                     // 提交操作
                 }) {
@@ -121,7 +121,7 @@ struct TargetAdjustmentView: View {
     }
 }
 
-// 属性视图组件（保持不变）
+// 屬性視圖組件（保持不變）
 struct AttributeView: View {
     let name: String
     @State var value: Int
@@ -141,7 +141,7 @@ struct AttributeView: View {
                     .foregroundColor(.secondary)
             }
             
-            // 进度条
+            // 進度條
             ZStack(alignment: .leading) {
                 Rectangle()
                     .fill(Color(.systemGray5))
@@ -154,7 +154,7 @@ struct AttributeView: View {
                     .cornerRadius(3)
             }
             
-            // 调整按钮
+            // 調整按鈕
             HStack {
                 Button(action: {
                     if value > 0 { value -= 1 }
@@ -179,7 +179,7 @@ struct AttributeView: View {
         .cornerRadius(10)
     }
     
-    // 根据进度值返回颜色
+    // 根據進度值返回顏色
     private var progressColor: Color {
         let progress = Double(value) / Double(total)
         if progress >= 0.8 {

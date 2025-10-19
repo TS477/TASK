@@ -1,6 +1,6 @@
 import SwiftUI
 
-// 数据模型
+// 數據模型
 struct Activity: Identifiable {
     let id = UUID()
     let name: String
@@ -27,7 +27,7 @@ struct PeerReview: Identifiable, Equatable {
     var rating: Int
     var comment: String
     
-    // 实现 Equatable 协议
+    // 實現 Equatable 協議
     static func == (lhs: PeerReview, rhs: PeerReview) -> Bool {
         lhs.id == rhs.id &&
         lhs.toStudent.id == rhs.toStudent.id &&
@@ -36,11 +36,11 @@ struct PeerReview: Identifiable, Equatable {
     }
 }
 
-// 主视图
+// 主視圖
 struct EventEvaluationView: View {
     let activity: Activity
     @State private var teacherComment = TeacherComment(
-        content: "同学们在这次团队建设中表现非常出色，展现了良好的协作精神和创新能力。特别是小组讨论环节，大家积极参与，提出了很多有价值的建议。",
+        content: "同學們在本次團隊建立中表現得非常出色，展現了良好的協作精神和創新能力。特別是小組討論環節，大家積極參與，提出了許多有價值的建議。",
         rating: 4,
         date: Date()
     )
@@ -51,36 +51,36 @@ struct EventEvaluationView: View {
     
     init(activity: Activity) {
         self.activity = activity
-        // 初始化互评数据
+        // 初始化互評數據
         _peerReviews = State(initialValue: generateInitialReviews(for: activity.participants))
     }
     
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                // 活动信息部分
+                // 活動信息部分
                 DisclosureGroup(isExpanded: Binding(
                     get: { expandedSections.contains("activity") },
                     set: { if $0 { expandedSections.insert("activity") } else { expandedSections.remove("activity") } }
                 )) {
                     EventInfoSection(activity: activity)
                 } label: {
-                    SectionHeader(title: "活动信息", systemImage: "info.circle")
+                    SectionHeader(title: "活動信息", systemImage: "info.circle")
                 }
                 .padding(.horizontal)
                 
-                // 老师评语部分
+                // 老師評語部分
                 DisclosureGroup(isExpanded: Binding(
                     get: { expandedSections.contains("teacher") },
                     set: { if $0 { expandedSections.insert("teacher") } else { expandedSections.remove("teacher") } }
                 )) {
                     TeacherCommentSection(comment: teacherComment)
                 } label: {
-                    SectionHeader(title: "老师评语", systemImage: "person.fill")
+                    SectionHeader(title: "老師評語", systemImage: "person.fill")
                 }
                 .padding(.horizontal)
                 
-                // 学生互评部分
+                // 學生互評部分
                 DisclosureGroup(isExpanded: Binding(
                     get: { expandedSections.contains("peer") },
                     set: { if $0 { expandedSections.insert("peer") } else { expandedSections.remove("peer") } }
@@ -92,11 +92,11 @@ struct EventEvaluationView: View {
                         showReviewEditor: $showReviewEditor
                     )
                 } label: {
-                    SectionHeader(title: "学生互评", systemImage: "person.3.fill")
+                    SectionHeader(title: "學生互評", systemImage: "person.3.fill")
                 }
                 .padding(.horizontal)
                 
-                // 提交按钮
+                // 提交按鈕
                 SubmitButton(completedCount: completedReviewsCount, totalCount: activity.participants.count - 1) {
                     submitAllReviews()
                 }
@@ -126,12 +126,12 @@ struct EventEvaluationView: View {
     }
     
     private func submitAllReviews() {
-        print("提交所有评价数据: \(peerReviews)")
-        // 这里可以添加提交到服务器的逻辑
+        print("提交所有評價數據: \(peerReviews)")
+        // 這裡可以添加提交到服務器的邏輯
     }
 }
 
-// 活动信息部分
+// 活動信息部分
 struct EventInfoSection: View {
     let activity: Activity
     
@@ -142,7 +142,7 @@ struct EventInfoSection: View {
                 .fontWeight(.bold)
                 .foregroundColor(.primary)
             
-            Text("活动日期: \(formatDate(activity.date))")
+            Text("活動日期: \(formatDate(activity.date))")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
             
@@ -153,9 +153,9 @@ struct EventInfoSection: View {
                 .background(Color.blue.opacity(0.1))
                 .cornerRadius(10)
             
-            // 参与学生
+            // 參與學生
             VStack(alignment: .leading, spacing: 12) {
-                Text("参与学生 (\(activity.participants.count)人)")
+                Text("參與學生 (\(activity.participants.count)人)")
                     .font(.headline)
                 
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 12) {
@@ -177,15 +177,15 @@ struct EventInfoSection: View {
     }
 }
 
-// 老师评语部分
+// 老師評語部分
 struct TeacherCommentSection: View {
     let comment: TeacherComment
     
     var body: some View {
         VStack(spacing: 16) {
-            // 评分
+            // 評分
             HStack {
-                Text("老师评分:")
+                Text("老師評分:")
                     .font(.headline)
                 
                 Spacer()
@@ -194,9 +194,9 @@ struct TeacherCommentSection: View {
                     .font(.title3)
             }
             
-            // 评语内容
+            // 評語內容
             VStack(alignment: .leading, spacing: 8) {
-                Text("评语内容:")
+                Text("評語內容:")
                     .font(.headline)
                 
                 Text(comment.content)
@@ -207,8 +207,8 @@ struct TeacherCommentSection: View {
                     .cornerRadius(10)
             }
             
-            // 评语日期
-            Text("评语日期: \(formatDate(comment.date))")
+            // 評語日期
+            Text("評語日期: \(formatDate(comment.date))")
                 .font(.caption)
                 .foregroundColor(.secondary)
         }
@@ -224,7 +224,7 @@ struct TeacherCommentSection: View {
     }
 }
 
-// 学生互评部分
+// 學生互評部分
 struct PeerReviewSection: View {
     let participants: [Student]
     @Binding var reviews: [PeerReview]
@@ -233,12 +233,12 @@ struct PeerReviewSection: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            Text("请为以下同学评分（共需要评价 \(participants.count - 1) 位同学）")
+            Text("請為以下同學評分（共需要評價 \(participants.count - 1) 位同學）")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
             
             ForEach(participants) { student in
-                // 不显示自己（假设第一个学生是自己）
+                // 不顯示自己（假設第一個學生是自己）
                 if student.id != participants.first?.id {
                     StudentReviewRow(
                         student: student,
@@ -280,7 +280,7 @@ struct PeerReviewSection: View {
     }
 }
 
-// 学生评价行
+// 學生評價行
 struct StudentReviewRow: View {
     let student: Student
     let review: PeerReview?
@@ -306,7 +306,7 @@ struct StudentReviewRow: View {
                         }
                     }
                 } else {
-                    Text("尚未评价")
+                    Text("尚未評價")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
@@ -325,7 +325,7 @@ struct StudentReviewRow: View {
     }
 }
 
-// 评价编辑器
+// 評價編輯器
 struct ReviewEditorView: View {
     let review: PeerReview
     @Binding var reviews: [PeerReview]
@@ -352,13 +352,13 @@ struct ReviewEditorView: View {
                     }
                 }
                 
-                Section("评分（1-5星）") {
+                Section("評分（1-5星）") {
                     StarRatingView(rating: $rating, interactive: true)
                         .font(.title2)
                         .frame(maxWidth: .infinity, alignment: .center)
                 }
                 
-                Section("评语") {
+                Section("評語") {
                     TextEditor(text: $comment)
                         .frame(height: 120)
                         .overlay(
@@ -367,7 +367,7 @@ struct ReviewEditorView: View {
                         )
                 }
             }
-            .navigationTitle("评价 \(review.toStudent.name)")
+            .navigationTitle("評價 \(review.toStudent.name)")
             .navigationBarItems(
                 leading: Button("取消") {
                     isPresented = false
@@ -382,11 +382,11 @@ struct ReviewEditorView: View {
     
     private func saveReview() {
         if let index = reviews.firstIndex(where: { $0.id == review.id }) {
-            // 更新现有评价
+            // 更新現有評價
             reviews[index].rating = rating
             reviews[index].comment = comment
         } else {
-            // 添加新评价
+            // 添加新評價
             let newReview = PeerReview(
                 toStudent: review.toStudent,
                 rating: rating,
@@ -397,7 +397,7 @@ struct ReviewEditorView: View {
     }
 }
 
-// 学生头像视图
+// 學生頭像視圖
 struct StudentAvatarView: View {
     let student: Student
     let showName: Bool
@@ -419,7 +419,7 @@ struct StudentAvatarView: View {
     }
 }
 
-// 星星评分组件
+// 星星評分組件
 struct StarRatingView: View {
     @Binding var rating: Int
     let interactive: Bool
@@ -447,7 +447,7 @@ struct StarRatingView: View {
     }
 }
 
-// 部分标题
+// 部分標題
 struct SectionHeader: View {
     let title: String
     let systemImage: String
@@ -462,7 +462,7 @@ struct SectionHeader: View {
     }
 }
 
-// 提交按钮
+// 提交按鈕
 struct SubmitButton: View {
     let completedCount: Int
     let totalCount: Int
@@ -475,7 +475,7 @@ struct SubmitButton: View {
                     Image(systemName: "checkmark.circle.fill")
                 }
                 
-                Text(completedCount == totalCount ? "提交所有评价" : "完成 \(completedCount)/\(totalCount) 后提交")
+                Text(completedCount == totalCount ? "提交所有評價" : "完成 \(completedCount)/\(totalCount) 後提交")
                     .fontWeight(.semibold)
             }
             .frame(maxWidth: .infinity)
@@ -488,10 +488,10 @@ struct SubmitButton: View {
     }
 }
 
-// 辅助函数
+// 輔助函數
 func generateInitialReviews(for students: [Student]) -> [PeerReview] {
     var reviews: [PeerReview] = []
-    // 跳过第一个学生（自己）
+    // 跳過第一個學生（自己）
     for student in students.dropFirst() {
         reviews.append(PeerReview(
             toStudent: student,
@@ -502,21 +502,21 @@ func generateInitialReviews(for students: [Student]) -> [PeerReview] {
     return reviews
 }
 
-// 示例数据 ///////////////////
+// 範例數據 ///////////////////
 let sampleActivity = Activity(
-    name: "团队建设活动",
-    description: "本次团队建设活动旨在增强团队凝聚力，通过一系列协作游戏和讨论环节，促进成员之间的沟通与理解。活动包括破冰游戏、小组讨论、团队挑战等环节。",
+    name: "團隊建立活動",
+    description: "本次團隊建設活動旨在增強團隊凝聚力，通過一系列協作遊戲和討論環節，促進成員之間的溝通與理解。活動包括破冰遊戲、小組討論、團隊挑戰等環節。",
     date: Date(),
     participants: [
-        Student(name: "我自己", avatar: "person.circle.fill"),
-        Student(name: "李四", avatar: "person.circle.fill"),
-        Student(name: "王五", avatar: "person.circle.fill"),
-        Student(name: "赵六", avatar: "person.circle.fill"),
-        Student(name: "钱七", avatar: "person.circle.fill")
+        Student(name: "1", avatar: "person.circle.fill"),
+        Student(name: "2", avatar: "person.circle.fill"),
+        Student(name: "3", avatar: "person.circle.fill"),
+        Student(name: "4", avatar: "person.circle.fill"),
+        Student(name: "5", avatar: "person.circle.fill")
     ]
 )
 
-// 预览
+// 預覽
 struct ActivityEvaluationView_Previews: PreviewProvider {
     static var previews: some View {
         EventEvaluationView(activity: sampleActivity)

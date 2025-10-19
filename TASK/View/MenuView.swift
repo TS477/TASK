@@ -52,7 +52,7 @@ struct MenuView: View {
     var body: some View {
         NavigationStack(path: $navigationPath) {
             ZStack {
-                // 背景渐变（可選）
+                // 背景漸變（可選）
                 // LinearGradient(...)
                 
                 // 菜单容器
@@ -61,7 +61,7 @@ struct MenuView: View {
                     userAvatar
                         .padding(10)
                     
-                    // 菜单按钮
+                    // 菜單按鈕
                     menuButtons
                     
                     Spacer()
