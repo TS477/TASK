@@ -17,7 +17,7 @@ struct EventOption: View {
             
             LazyVGrid(columns: Array(repeating: GridItem(.adaptive(minimum: 1000, maximum: 200)), count: 2), spacing: 10) {
                 
-                NavigationLink(destination: EmptyView()) {
+                NavigationLink(destination: ChatView()) {
                     NavigationButton(
                         title: "聊天室",
                         icon: "message.fill",
