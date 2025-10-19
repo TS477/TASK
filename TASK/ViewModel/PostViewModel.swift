@@ -42,6 +42,26 @@ class PostViewModel: ObservableObject {
         posts.removeAll()
     }
     
+    // 按讚
+    func toggleLike(eventId: Int) {
+        print("請求按讚")
+        
+        let url = URL(string: "\(PostViewModel.POST_URL)?userId=\(self.currentUser.id)&eventId=\(eventId)")!
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        Task {
+            do {
+                let (data, _) = try await URLSession.shared.data(for: request)
+                let result = try JSONDecoder().decode([String: Bool].self, from: data)
+                print("点赞状态: \(result["liked"] ?? false)")
+            } catch {
+                print("按讚請求錯誤: \(error)")
+            }
+        }
+    }
+    
     // 實際的網絡請求函數
     private func fetchPosts() async throws -> [PostModel] {
         do {

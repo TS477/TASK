@@ -173,6 +173,8 @@ struct HomePageView: View {
 
     // post畫面
     struct EventView: View, Identifiable {
+        @EnvironmentObject var postViewModel: PostViewModel
+        
         var id: UUID = UUID()
         @State var isDescriptionSheetPresented: Bool = false // 描述用
         
@@ -230,6 +232,7 @@ struct HomePageView: View {
                                 }
                                 
                                 self.isLiked.toggle()
+                                postViewModel.toggleLike(eventId: self.postId)
                             }) {
                                 Image(systemName: self.isLiked ? "heart.fill" : "heart")
                                     .foregroundColor(.red)
