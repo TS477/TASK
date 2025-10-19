@@ -78,7 +78,35 @@ struct MainView: View {
                     }
                 }
             }
+<<<<<<< HEAD
             .background(Color(UIColor.systemBackground))
+=======
+            .listStyle(.sidebar)
+            .navigationTitle("目錄")
+        } detail: {
+            Group {
+                if let section = selectedSection {
+                    switch section {
+                    case .home:
+                        HomePageView()
+                            .onAppear() {
+                            }
+                    case .menu:
+                        MenuView(isLoggedIn: $isLoggedIn)
+                    case .search:
+                        Text("搜索內容待完成")
+                    case .allEvent:
+                        Text("活動一覽")
+                    }
+                } else {
+                    ContentUnavailableView(
+                        "請選擇一個項目",
+                        systemImage: "square.grid.2x2",
+                        description: Text("從左側選單中選擇要查看的內容")
+                    )
+                }
+            }
+>>>>>>> parent of a5825e9 (修改MainView)
         }
     }
 }

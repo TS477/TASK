@@ -241,7 +241,20 @@ struct ForgotPasswordView: View {
 }
 
 #Preview() {
+<<<<<<< HEAD
     AppLoginView()
         .environmentObject(Navigation())
         .environmentObject(UserViewModel(userModel: UserModel()))
+=======
+    @Previewable @State var isLoggedIn: Bool = false
+    @Previewable @StateObject var userService = UserService()
+    
+    // 創建 ViewModel，注入同一個服務層實例
+    var userViewModel: UserViewModel {
+        UserViewModel(userService: userService)
+    }
+    
+    AppLoginView(success: $isLoggedIn)
+        .environmentObject(userViewModel)
+>>>>>>> parent of a5825e9 (修改MainView)
 }
