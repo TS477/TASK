@@ -5,40 +5,52 @@
 //  Created by TSOvO on 29/8/2025.
 //
 
-import OpenAI
+import Foundation
 
 class AIModel {
-    static private var openai: OpenAI = OpenAI(
-        configuration: OpenAI.Configuration(
-            token: "sk-xfRgQHjLppotD50TBe311a0b9a774f9e993a54BcEfC986Ae",
-            host: "free.v36.cm"
-        )
-    )
-     
+    static private let aiURL = "https://task.aifabula784.workers.dev/ai"
+    
     static public func sendMessage(question: String, completion: @escaping (String) -> Void) {
-        Task {
-            do {
-                let query = ChatQuery(
-                    messages: [ // 信息設置，例如角色，創新度等等
-                        .user(.init(content: .string(question)))
-                    ],
-                    model: "gpt-4o-mini" // 用的模型，這裡是gpt 4o mini
-                )
-                
-                let result = try await openai.chats(query: query)
-                
-                await MainActor.run { // 這個是協程，等待服務器的ai回應
-                    if let content = result.choices.first?.message.content {
-                        completion(content)
-                    }
+        guard let url = URL(string: aiURL) else {
+            completion("錯誤: URL 無效")
+            return
+        }
+        
+        let body = ["question": question]
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    completion("錯誤: \(error.localizedDescription)")
                 }
-                
-            } catch {
-                await MainActor.run {
-                    var errorResponseText: String = "错误: \(error.localizedDescription)"
-                    completion(errorResponseText)
+                return
+            }
+            
+            guard let data = data else {
+                DispatchQueue.main.async { completion("無回應") }
+                return
+            }
+            
+            if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+               let answer = json["answer"] as? String {
+                DispatchQueue.main.async {
+                    completion(answer)
+                }
+            } else if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                      let errorMsg = json["error"] as? String {
+                DispatchQueue.main.async {
+                    completion("AI 錯誤: \(errorMsg)")
+                }
+            } else {
+                DispatchQueue.main.async {
+                    completion("未知錯誤")
                 }
             }
-        }
+        }.resume()
     }
 }

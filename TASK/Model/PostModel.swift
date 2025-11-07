@@ -18,6 +18,7 @@ struct PostModel: Codable, Identifiable {
     let abilityVal6: Int
     let abilityVal7: Int
     let abilityVal8: Int
+    let abilityVal9: Int
     let description: String
     let date: String
     let postUrl: String
@@ -37,6 +38,7 @@ struct PostModel: Codable, Identifiable {
         case abilityVal6 = "ability6"
         case abilityVal7 = "ability7"
         case abilityVal8 = "ability8"
+        case abilityVal9 = "ability9"
         case description
         case date
         case postUrl = "post_url"

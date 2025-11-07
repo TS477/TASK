@@ -36,7 +36,7 @@ struct HomePageView: View {
                     TabView {
                         ForEach(postViewModel.posts) { post in
                             // like test //////////////////////////
-                            EventView(postId: post.id, proposer: post.proposer, postImage: Image(""), eventName: post.eventName, date: post.date, description: post.description, isLiked: (post.isLike != 0),
+                            EventView(eventId: post.id, proposer: post.proposer, postImage: Image(""), eventName: post.eventName, date: post.date, description: post.description, isLiked: (post.isLike != 0),
                                 likeCount: post.likeCount
                             )
                         }
@@ -178,7 +178,7 @@ struct HomePageView: View {
         var id: UUID = UUID()
         @State var isDescriptionSheetPresented: Bool = false // 描述用
         
-        var postId: Int
+        var eventId: Int
         var proposer: String
         var postImage: Image
         var eventName: String
@@ -203,7 +203,7 @@ struct HomePageView: View {
                         
                 }
                 
-                AsyncImage(url: URL(string: "\(PostViewModel.POSTER_URL + "/" + String(self.postId)).png")) { image in
+                AsyncImage(url: URL(string: "\(PostViewModel.POSTER_URL + "/" + String(self.eventId)).png")) { image in
                     image
                         .resizable()
                         .scaledToFit()
@@ -232,7 +232,7 @@ struct HomePageView: View {
                                 }
                                 
                                 self.isLiked.toggle()
-                                postViewModel.toggleLike(eventId: self.postId)
+                                postViewModel.toggleLike(eventId: self.eventId)
                             }) {
                                 Image(systemName: self.isLiked ? "heart.fill" : "heart")
                                     .foregroundColor(.red)
@@ -251,7 +251,7 @@ struct HomePageView: View {
                         }
                         
                         Button(action: {
-                            
+
                         }) {
                             Image(systemName: "square.and.arrow.up")
                                 .foregroundStyle(.gray)

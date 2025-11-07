@@ -8,12 +8,15 @@ import Foundation
 
 class PostViewModel: ObservableObject {
     @Published private(set) var posts: [PostModel] = []
+    @Published private(set) var comments: [Int: [EventCommentModel]] = [:]
     private let userService: UserService
     private var currentPage = 0
     private let PAGE_SIZE = 5
     
     static let POSTER_URL: String = "https://task.aifabula784.workers.dev/post/poster"
+    static let POST_LIKE_URL: String = "https://task.aifabula784.workers.dev/post/like"
     static let POST_URL: String = "https://task.aifabula784.workers.dev/post"
+    static let POST_COMMENT_URL: String = "https://task.aifabula784.workers.dev/post/comment"
     
     // 計算屬性，從服務層獲取當前用戶
     var currentUser: UserModel {
@@ -31,6 +34,7 @@ class PostViewModel: ObservableObject {
             posts.append(contentsOf: newPosts)
             currentPage += 1
             print("加載了 \(newPosts.count) 個新帖子，當前總數: \(posts.count)")
+            // print(posts)
         } catch {
             print("加載帖子失敗: \(error)")
         }
@@ -38,15 +42,19 @@ class PostViewModel: ObservableObject {
     
     // 重置加載狀態
     func resetLoading() {
+        // 刪除post內存
         currentPage = 0
         posts.removeAll()
+        
+        // 刪除評論內存
+        comments.removeAll()
     }
     
     // 按讚
     func toggleLike(eventId: Int) {
         print("請求按讚")
         
-        let url = URL(string: "\(PostViewModel.POST_URL)?userId=\(self.currentUser.id)&eventId=\(eventId)")!
+        let url = URL(string: "\(PostViewModel.POST_LIKE_URL)?userId=\(self.currentUser.id)&eventId=\(eventId)")!
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -85,6 +93,27 @@ class PostViewModel: ObservableObject {
             print(error)
             print("不加載任何活動帖子")
             return []
+        }
+    }
+    
+    // 請求評論
+    public func fetchComments(eventId: Int) async{
+        do {
+            let urlString = PostViewModel.POST_COMMENT_URL + "?eventId=\(eventId)"
+            
+            guard let url = URL(string: urlString) else {
+                throw URLError(.badURL)
+            }
+            
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let decoder = JSONDecoder()
+            let posts = try decoder.decode([EventCommentModel].self, from: data)
+            
+            self.comments[eventId] = posts
+            print(comments)
+            
+        } catch {
+            print(error)
         }
     }
 }
